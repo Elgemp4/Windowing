@@ -16,7 +16,8 @@ public class LinearSplitStrategy implements SplitStrategy {
         for (Segment segment : segments) {
             if (segment.isVertical()) {
                 verticalSegments.add(segment);
-            } else if (segment.isVertical()) {
+            }
+            else {
                 horizontalSegments.add(segment);
             }
         }
