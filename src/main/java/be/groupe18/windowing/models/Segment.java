@@ -17,10 +17,28 @@ public class Segment {
         return secondPoint;
     }
 
-    public double getOrigin(){
-        return (firstPoint.getFirst()  == secondPoint.getFirst()) ? firstPoint.getFirst() : firstPoint.getSecond();
+    public boolean isVertical() {
+        return firstPoint.getFirst() == secondPoint.getFirst();
     }
 
-    public Vector2D getInterval(){
-        return (firstPoint.getFirst()  == secondPoint.getFirst()) ? new Vector2D(firstPoint.getSecond(), secondPoint.getSecond()) : new Vector2D(firstPoint.getFirst(), secondPoint.getFirst());
-    }}
+    public double getOrigin() {
+        return this.isVertical() ? firstPoint.getFirst() : firstPoint.getSecond();
+    }
+
+
+    public double getMinInterval() {
+        if (isVertical()) {
+            return Math.min(getFirstPoint().getSecond(), getSecondPoint().getSecond());
+        } else {
+            return Math.min(getFirstPoint().getFirst(), getSecondPoint().getFirst());
+        }
+    }
+
+    public double getMaxInterval() {
+        if (isVertical()) {
+            return Math.max(getFirstPoint().getSecond(), getSecondPoint().getSecond());
+        } else {
+            return Math.max(getFirstPoint().getFirst(), getSecondPoint().getFirst());
+        }
+    }
+}
