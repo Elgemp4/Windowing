@@ -17,7 +17,6 @@ public class RecursiveBuildStrategy implements BuildStrategy{
     private final SplitStrategy<Segment> splitStrategy;
 
     public RecursiveBuildStrategy(MinimumStrategy<Segment> minimumStrategy, MedianStrategy<Segment> medianStrategy, SplitStrategy<Segment> splitStrategy) {
-
         this.minimumStrategy = minimumStrategy;
         this.medianStrategy = medianStrategy;
         this.splitStrategy = splitStrategy;
@@ -63,7 +62,6 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         return medianSegment.getOrigin();
     }
 
-    //TODO : implementer la méthode pour split les segments en fonction de la médiane
     private Pair<List<Segment>, List<Segment>> split(List<Segment> segments, CompositeDouble median) {
         return splitStrategy.split(segments, (Segment s) -> CompositeDouble.greaterThan(median, s.getOrigin()));
     }

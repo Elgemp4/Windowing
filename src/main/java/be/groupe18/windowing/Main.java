@@ -22,8 +22,8 @@ public class Main {
         SplitStrategy<Segment> splitStrategy = new LinearSplitStrategy<>();
         BuildStrategy buildStrategy = new RecursiveBuildStrategy(
                 new LinearMinimumStrategy<>(),
-                null,
-                new LinearSplitStrategy<>());
+                null, //TODO : implement median strategy
+                splitStrategy);
 
         QueryStrategy queryStrategy = null; //TODO: implement query strategy
 
