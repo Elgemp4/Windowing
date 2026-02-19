@@ -1,19 +1,18 @@
 package be.groupe18.windowing.models;
 
 public class Vector2D {
-    private double first;
-    private double second;
+    private CompositeDouble x;
+    private CompositeDouble y;
 
-    public Vector2D(double first, double second) {
-        this.first = first;
-        this.second = second;
+    public Vector2D(double x, double y) {
+        this.x = new CompositeDouble(x, y);
+        this.y = new CompositeDouble(y, x);
     }
 
-    public double getFirst() {
-        return first;
+    public CompositeDouble getX() {
+        return x;
     }
-
-    public double getSecond() {
-        return second;
+    public CompositeDouble getY() {
+        return y;
     }
 }

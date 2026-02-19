@@ -7,7 +7,7 @@ public class PRT {
     private PRT leftChild;
     private PRT rightChild;
     private Segment segment;
-    private double median;
+    private CompositeDouble median;
 
     public PRT() {
         this.segment = segment;
@@ -42,11 +42,11 @@ public class PRT {
         this.segment = segment;
     }
 
-    public double getMedian() {
+    public CompositeDouble getMedian() {
         return median;
     }
 
-    public void setMedian(double median) {
+    public void setMedian(CompositeDouble median) {
         this.median = median;
     }
 }

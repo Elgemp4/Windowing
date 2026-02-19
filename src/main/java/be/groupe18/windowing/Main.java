@@ -6,6 +6,8 @@ import be.groupe18.windowing.models.Scene;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.build.BuildStrategy;
 import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
 import be.groupe18.windowing.strategies.query.QueryStrategy;
 import be.groupe18.windowing.strategies.splitting.LinearSplitStrategy;
 import be.groupe18.windowing.strategies.splitting.SplitStrategy;
@@ -17,8 +19,12 @@ import java.util.List;
 public class Main {
     static void main() {
         SceneLoader loader = new FileSceneLoader();
-        SplitStrategy splitStrategy = new LinearSplitStrategy();
-        BuildStrategy buildStrategy = new RecursiveBuildStrategy();
+        SplitStrategy<Segment> splitStrategy = new LinearSplitStrategy<>();
+        BuildStrategy buildStrategy = new RecursiveBuildStrategy(
+                new LinearMinimumStrategy<>(),
+                null,
+                new LinearSplitStrategy<>());
+
         QueryStrategy queryStrategy = null; //TODO: implement query strategy
 
         List<Segment> segments = null;
@@ -28,10 +34,10 @@ public class Main {
             System.exit(0);
         }
 
-        Pair<List<Segment>, List<Segment>> splitResult = splitStrategy.split(segments);
+        Pair<List<Segment>, List<Segment>> splitResult = splitStrategy.split(segments, Segment::isVertical);
         Scene scene = new Scene(buildStrategy, queryStrategy);
-        scene.buildHorizontalTree(splitResult.getFirst());
-        scene.buildVerticalTree(splitResult.getSecond());
+        scene.buildVerticalTree(splitResult.getFirst());
+        scene.buildHorizontalTree(splitResult.getSecond());
 
         //TODO: querying
     }
