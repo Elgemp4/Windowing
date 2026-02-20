@@ -4,12 +4,10 @@ import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.utils.Pair;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 
-public interface SplitStrategy {
-    /**
-     * Splits the given segments into horizontal and vertical segments.
-     * @param segments The raw list of segments to split.
-     * @return A SplitResult containing the horizontal and vertical segments.
-     */
-    Pair<List<Segment>, List<Segment>> split(List<Segment> segments);
+public interface SplitStrategy<T> {
+
+    Pair<List<T>, List<T>> split(List<T> elements, Function<T, Boolean> belongsToFirst);
 }

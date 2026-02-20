@@ -1,27 +1,26 @@
 package be.groupe18.windowing.strategies.splitting;
 
-import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
-public class LinearSplitStrategy implements SplitStrategy {
+public class LinearSplitStrategy<T> implements SplitStrategy<T> {
     @Override
-    public Pair<List<Segment>, List<Segment>> split(List<Segment> segments) {
+    public Pair<List<T>, List<T>> split(List<T> elements, Function<T,Boolean> belongsToFirst) {
+        List<T> first = new ArrayList<>();
+        List<T> second = new ArrayList<>();
 
-        List<Segment> horizontalSegments = new ArrayList<>();
-        List<Segment> verticalSegments = new ArrayList<>();
-
-        for (Segment segment : segments) {
-            if (segment.isVertical()) {
-                verticalSegments.add(segment);
+        for (T e : elements) {
+            if (belongsToFirst.apply(e)) {
+                second.add(e);
             }
             else {
-                horizontalSegments.add(segment);
+                first.add(e);
             }
         }
 
-        return new Pair<>(horizontalSegments, verticalSegments);
+        return new Pair<>(first, second);
     }
 }

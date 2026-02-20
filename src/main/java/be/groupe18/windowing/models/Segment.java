@@ -18,27 +18,27 @@ public class Segment {
     }
 
     public boolean isVertical() {
-        return firstPoint.getFirst() == secondPoint.getFirst();
+        return firstPoint.getX() == secondPoint.getX();
     }
 
-    public double getOrigin() {
-        return this.isVertical() ? firstPoint.getFirst() : firstPoint.getSecond();
+    public CompositeDouble getOrigin() {
+        return this.isVertical() ? firstPoint.getX() : firstPoint.getY();
     }
 
 
-    public double getMinInterval() {
+    public CompositeDouble getMinInterval() {
         if (isVertical()) {
-            return Math.min(getFirstPoint().getSecond(), getSecondPoint().getSecond());
+            return CompositeDouble.min(getFirstPoint().getY(), getSecondPoint().getY());
         } else {
-            return Math.min(getFirstPoint().getFirst(), getSecondPoint().getFirst());
+            return CompositeDouble.min(getFirstPoint().getX(), getSecondPoint().getX());
         }
     }
 
-    public double getMaxInterval() {
+    public CompositeDouble getMaxInterval() {
         if (isVertical()) {
-            return Math.max(getFirstPoint().getSecond(), getSecondPoint().getSecond());
+            return CompositeDouble.max(getFirstPoint().getY(), getSecondPoint().getY());
         } else {
-            return Math.max(getFirstPoint().getFirst(), getSecondPoint().getFirst());
+            return CompositeDouble.max(getFirstPoint().getX(), getSecondPoint().getX());
         }
     }
 }
