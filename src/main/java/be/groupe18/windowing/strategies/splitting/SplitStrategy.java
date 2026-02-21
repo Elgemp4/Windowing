@@ -9,5 +9,8 @@ import java.util.function.Function;
 
 public interface SplitStrategy<T> {
 
-    Pair<List<T>, List<T>> split(List<T> elements, Function<T, Boolean> belongsToFirst);
+    int split(List<T> elements, Function<T, Boolean> belongsToFirst, int start, int end);
+    default int split(List<T> elements, Function<T, Boolean> belongsToFirst){
+        return split(elements,belongsToFirst,0,elements.size());
+    }
 }
