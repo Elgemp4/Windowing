@@ -38,13 +38,13 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         }
 
         CompositeDouble median = getMedian(segments);
-        Pair<List<Segment>, List<Segment>> splitSegments = split(segments, median);
+        int pivotIndex = split(segments, median);
         PRT currentNode = new PRT();
 
         currentNode.setSegment(minIntSegment);
         currentNode.setMedian(median);
-        currentNode.setLeftChild(build(splitSegments.getFirst()));
-        currentNode.setRightChild(build(splitSegments.getSecond()));
+        //currentNode.setLeftChild(build(splitSegments.getFirst()));
+        //currentNode.setRightChild(build(splitSegments.getSecond()));
         return currentNode;
     }
 
@@ -56,13 +56,14 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
     //TODO : implementer la méthode pour calculer la médiane d'un segment
     private CompositeDouble getMedian(List<Segment> segments) {
-        Segment medianSegment =  medianStrategy.computeMedian(segments,
+        int medianIndex =  medianStrategy.computeMedian(segments,
                 (Segment s1, Segment s2) -> CompositeDouble.greaterThan(s1.getOrigin(), s2.getOrigin()));
 
+        Segment medianSegment = segments.get(medianIndex);
         return medianSegment.getOrigin();
     }
 
-    private Pair<List<Segment>, List<Segment>> split(List<Segment> segments, CompositeDouble median) {
+    private int split(List<Segment> segments, CompositeDouble median) {
         return splitStrategy.split(segments, (Segment s) -> CompositeDouble.greaterThan(median, s.getOrigin()));
     }
 }
