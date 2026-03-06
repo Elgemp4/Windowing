@@ -1,5 +1,8 @@
 package be.groupe18.windowing.models;
 
+/**
+ * Represent a composite double, which is a class that represent (a|b)
+ */
 public class CompositeDouble {
     private double primary;
     private double secondary;
@@ -9,6 +12,12 @@ public class CompositeDouble {
         this.secondary = secondary;
     }
 
+    /**
+     * Uses lexicographic comparison to compare d1 and d2
+     * @param d1 first composite number to compare
+     * @param d2 second composite number to compare
+     * @return true if d1 > d2, false otherwise
+     */
     public static boolean greaterThan(CompositeDouble d1, CompositeDouble d2){
         if(d1.primary > d2.primary){
             return true;
@@ -18,6 +27,12 @@ public class CompositeDouble {
         }
     }
 
+    /**
+     * Return the qé
+     * @param d1
+     * @param d2
+     * @return
+     */
     public static CompositeDouble max(CompositeDouble d1, CompositeDouble d2){
         if(greaterThan(d1, d2)){
             return d1;
