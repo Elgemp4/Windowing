@@ -23,33 +23,28 @@ import java.util.List;
 public class Main {
     static void main() {
 
-        List<Integer> element = Arrays.asList(5,  40, 1, 100 , 29, 30, 200, 1000, 2); // 1 2 5 29 30 40 100 200 1000
-        SplitStrategy<Integer> splitStrategy = new LinearSplitStrategy<Integer>();
-        MedianStrategy<Integer> median = new QuickSelectMedianStrategy<Integer>(splitStrategy);
 
-        System.out.println(element.get(median.computeMedian(element, (Integer nb1, Integer nb2) -> nb1 >= nb2)));
-
-        /*SceneLoader loader = new FileSceneLoader();
+        SceneLoader loader = new FileSceneLoader();
         SplitStrategy<Segment> splitStrategy = new LinearSplitStrategy<>();
         BuildStrategy buildStrategy = new RecursiveBuildStrategy(
                 new LinearMinimumStrategy<>(),
-                null, //TODO : implement median strategy
+                new QuickSelectMedianStrategy<>(),
                 splitStrategy);
 
         QueryStrategy queryStrategy = null; //TODO: implement query strategy
 
         List<Segment> segments = null;
         try  {
-            segments = loader.loadScene("C:\\Users\\elgem\\Documents\\scenes\\scenes\\1000.txt");
+            segments = loader.loadScene("/home/elgem/Downloads/Windowing/scenes/10.txt");
         } catch (IOException e) {
             System.exit(0);
         }
 
-        Pair<List<Segment>, List<Segment>> splitResult = splitStrategy.split(segments, Segment::isVertical);
+        int splitIndex  = splitStrategy.split(segments, Segment::isVertical);
         Scene scene = new Scene(buildStrategy, queryStrategy);
-        scene.buildVerticalTree(splitResult.getFirst());
-        scene.buildHorizontalTree(splitResult.getSecond());*/
-
+        scene.buildVerticalTree(segments, 0, splitIndex);
+        scene.buildHorizontalTree(segments, splitIndex, segments.size());
+        System.out.println(scene);
         //TODO: querying
     }
 }

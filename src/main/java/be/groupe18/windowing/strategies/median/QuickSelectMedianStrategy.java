@@ -6,15 +6,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
-    private SplitStrategy<T> splitStrategy;
-
-    public QuickSelectMedianStrategy(SplitStrategy<T> splitStrategy) {
-        this.splitStrategy = splitStrategy;
-    }
 
     @Override
-    public int computeMedian(List<T> elements, BiFunction<T, T, Boolean> greaterThan) {
-        return quickSelect(elements, greaterThan, 0, elements.size());
+    public int computeMedian(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {
+        return quickSelect(elements, greaterThan, start, end);
     }
 
     private int quickSelect(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end){

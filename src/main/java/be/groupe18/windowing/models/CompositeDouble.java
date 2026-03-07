@@ -27,6 +27,10 @@ public class CompositeDouble {
         }
     }
 
+    public static boolean looseEqual(CompositeDouble d1, CompositeDouble d2){
+        return d1.primary == d2.primary;
+    }
+
     /**
      * Return the qé
      * @param d1

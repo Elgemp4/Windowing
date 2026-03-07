@@ -5,15 +5,18 @@ import java.util.function.BiFunction;
 
 public class LinearMinimumStrategy<T> implements MinimumStrategy<T> {
     @Override
-    public T getMinimum(List<T> elements, BiFunction<T, T, Boolean> greaterThan) {
+    public int getMinimum(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {
         T minElement = elements.getFirst();
+        int minIndex = 0;
 
-        for(T e : elements){
+        for (int i = start; i < end; i++) {
+            T e = elements.get(i);
             if(greaterThan.apply(minElement, e)){
                 minElement = e;
+                minIndex = i;
             }
         }
 
-        return minElement;
+        return minIndex;
     }
 }
