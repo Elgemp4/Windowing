@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileSceneLoader implements SceneLoader{
@@ -19,7 +20,7 @@ public class FileSceneLoader implements SceneLoader{
                 .map(splitLine -> {
                     double[] parsed = Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
                     return new Segment(new Vector2D(parsed[0], parsed[1]), new Vector2D(parsed[2], parsed[3]));
-                }).toList();
+                }).collect(Collectors.toList());
         }
     }
 }

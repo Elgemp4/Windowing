@@ -18,7 +18,7 @@ public class Segment {
     }
 
     public boolean isVertical() {
-        return firstPoint.getX() == secondPoint.getX();
+        return CompositeDouble.looseEqual(firstPoint.getX(), secondPoint.getX());
     }
 
     public CompositeDouble getOrigin() {

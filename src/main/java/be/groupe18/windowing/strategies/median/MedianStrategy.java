@@ -5,5 +5,5 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public interface MedianStrategy<T> {
-    int computeMedian(List<T> elements, BiFunction<T,T,Boolean> greaterThan);
+    int computeMedian(List<T> elements, BiFunction<T,T,Boolean> greaterThan, int start, int end);
 }
