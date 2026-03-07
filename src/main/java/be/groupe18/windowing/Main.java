@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
 
         List<Integer> element = Arrays.asList(5,  40, 1, 100 , 29, 30, 200, 1000, 2); // 1 2 5 29 30 40 100 200 1000
         SplitStrategy<Integer> splitStrategy = new LinearSplitStrategy<Integer>();
