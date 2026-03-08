@@ -1,7 +1,5 @@
 package be.groupe18.windowing.strategies.median;
 
-import be.groupe18.windowing.strategies.splitting.SplitStrategy;
-
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -14,7 +12,7 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
     private int quickSelect(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end){
         int elementCount = end-start;
-        int medianIndex = elements.size()/2;
+        int medianIndex = start + elementCount/2;
 
         if(elementCount <= 5){ // Simple linear time bubble sort on <= 5 elements for their median
             return bubbleMedian(elements, greaterThan, start, end);

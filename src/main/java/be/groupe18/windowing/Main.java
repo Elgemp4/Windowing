@@ -35,11 +35,12 @@ public class Main {
 
         List<Segment> segments = null;
         try  {
-            segments = loader.loadScene("/home/elgem/Downloads/Windowing/scenes/10.txt");
+            segments = loader.loadScene("/home/elgem/Downloads/Windowing/scenes/100000.txt");
         } catch (IOException e) {
             System.exit(0);
         }
 
+        System.out.println("Before");
         int splitIndex  = splitStrategy.split(segments, Segment::isVertical);
         Scene scene = new Scene(buildStrategy, queryStrategy);
         scene.buildVerticalTree(segments, 0, splitIndex);
