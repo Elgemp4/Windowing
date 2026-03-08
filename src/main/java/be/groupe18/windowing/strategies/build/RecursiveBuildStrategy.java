@@ -25,7 +25,6 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
     @Override
     public PRT build(List<Segment> segments, int start, int end){
-
         int minSegmentIndex = getMinimumIntervalSegment(segments, start,  end);
         Segment minIntSegment = segments.get(minSegmentIndex);
         swap(segments, start, minSegmentIndex);
@@ -36,12 +35,9 @@ public class RecursiveBuildStrategy implements BuildStrategy{
             currentNode.setSegment(minIntSegment);
             return currentNode;
         }
-        System.out.println("Start : " + start);
-        System.out.println("End : " + end);
         int medianIndex = getMedian(segments, start, end);
         CompositeDouble median = segments.get(medianIndex).getOrigin();
 
-        System.out.println();
         int pivotIndex = partition(segments, (el1, el2) -> CompositeDouble.greaterThan(el1.getOrigin(), el2.getOrigin()), start, end, medianIndex);
         PRT currentNode = new PRT();
 
@@ -72,9 +68,8 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
     //TODO : implementer la méthode pour calculer la médiane d'un segment
     private int getMedian(List<Segment> segments, int start, int end) {
-        int medianIndex =  medianStrategy.computeMedian(segments,
+        return  medianStrategy.computeMedian(segments,
                 (Segment s1, Segment s2) -> CompositeDouble.greaterThan(s1.getOrigin(), s2.getOrigin()), start ,end);
-        return medianIndex;
     }
 
     /**
@@ -88,10 +83,11 @@ public class RecursiveBuildStrategy implements BuildStrategy{
      */
     public int partition(List<Segment> elements, BiFunction<Segment, Segment, Boolean> greaterThan, int start, int end, int pivot) {
         swap(elements, pivot, end-1);
-
+        Segment pivotEL = elements.get(end-1);
         int j = start;
         for(int i =start; i < end-1; i++){
-            if(greaterThan.apply(elements.get(end-1), elements.get(i))){
+            Segment current = elements.get(i);
+            if(greaterThan.apply(pivotEL, current)){
                 swap(elements,i,j);
                 j+=1;
             }
