@@ -6,18 +6,14 @@ import be.groupe18.windowing.models.Scene;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.build.BuildStrategy;
 import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
-import be.groupe18.windowing.strategies.median.MedianStrategy;
 import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
 import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
+import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
 import be.groupe18.windowing.strategies.query.QueryStrategy;
-import be.groupe18.windowing.strategies.splitting.LinearSplitStrategy;
-import be.groupe18.windowing.strategies.splitting.SplitStrategy;
-import be.groupe18.windowing.utils.Pair;
+import be.groupe18.windowing.strategies.simple_split.LinearSimpleSplitStrategy;
+import be.groupe18.windowing.strategies.simple_split.SimpleSplitStrategy;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -25,11 +21,10 @@ public class Main {
 
 
         SceneLoader loader = new FileSceneLoader();
-        SplitStrategy<Segment> splitStrategy = new LinearSplitStrategy<>();
         BuildStrategy buildStrategy = new RecursiveBuildStrategy(
                 new LinearMinimumStrategy<>(),
-                new QuickSelectMedianStrategy<>(),
-                splitStrategy);
+                new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
+                new LinearPivotSplitStrategy<>());
 
         QueryStrategy queryStrategy = null; //TODO: implement query strategy
 
@@ -41,7 +36,8 @@ public class Main {
         }
 
         System.out.println("Before");
-        int splitIndex  = splitStrategy.split(segments, Segment::isVertical);
+        SimpleSplitStrategy<Segment> simpleSplitStrategy = new LinearSimpleSplitStrategy<>();
+        int splitIndex  = simpleSplitStrategy.split(segments, Segment::isVertical);
         Scene scene = new Scene(buildStrategy, queryStrategy);
         scene.buildVerticalTree(segments, 0, splitIndex);
         scene.buildHorizontalTree(segments, splitIndex, segments.size());

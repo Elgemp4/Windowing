@@ -1,9 +1,21 @@
 package be.groupe18.windowing.strategies.median;
 
+import be.groupe18.windowing.models.Segment;
+import be.groupe18.windowing.strategies.pivot_split.PivotSplitStrategy;
+
 import java.util.List;
 import java.util.function.BiFunction;
 
+import static java.util.Collections.swap;
+
 public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
+
+
+    private final PivotSplitStrategy<T> pivotSplitStrategy;
+
+    public QuickSelectMedianStrategy(PivotSplitStrategy<T> pivotSplitStrategy) {
+        this.pivotSplitStrategy = pivotSplitStrategy;
+    }
 
     @Override
     public int computeMedian(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {
@@ -34,7 +46,7 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
         //Partition the elements in two group those greater than the pivot before "rank" and those greater than
         //the pivot after "rank". At "rank" the pivot is stored
-        int rank = partition(elements, greaterThan, start, end, pivotIndex);
+        int rank = pivotSplitStrategy.partition(elements, greaterThan, start, end, pivotIndex);
 
         if(rank < medianIndex) { //If the pivot's rank is less than the median's one search the median in the top group
             return quickSelect(elements, greaterThan, rank, end);
@@ -70,41 +82,5 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
             swap(elements, j, minIndex);
         }
         return medianIndex;
-    }
-
-    /**
-     * Swap two elements
-     * @param elements
-     * @param i1
-     * @param i2
-     */
-    private void swap(List<T> elements, int i1, int i2) {
-        T temp = elements.get(i1);
-        elements.set(i1, elements.get(i2));
-        elements.set(i2, temp);
-    }
-
-    /**
-     * Partition the input list into two groups, those lesser than the pivot before it and those greater than it after
-     * @param elements
-     * @param greaterThan
-     * @param start
-     * @param end
-     * @param pivot
-     * @return The rank of the pivot
-     */
-    public int partition(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end, int pivot) {
-        swap(elements, pivot, end-1);
-
-        int j = start;
-        for(int i =start; i < end-1; i++){
-            if(greaterThan.apply(elements.get(end-1), elements.get(i))){
-                swap(elements,i,j);
-                j+=1;
-            }
-        }
-
-        swap(elements, j, end-1);
-        return j;
     }
 }
