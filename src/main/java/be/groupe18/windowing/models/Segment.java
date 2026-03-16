@@ -1,8 +1,8 @@
 package be.groupe18.windowing.models;
 
 public class Segment {
-    private Vector2D firstPoint;
-    private Vector2D secondPoint;
+    private final Vector2D firstPoint;
+    private final Vector2D secondPoint;
 
     public Segment(Vector2D firstPoint, Vector2D secondPoint) {
         this.firstPoint = firstPoint;

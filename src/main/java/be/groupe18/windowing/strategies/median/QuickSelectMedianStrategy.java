@@ -1,6 +1,5 @@
 package be.groupe18.windowing.strategies.median;
 
-import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.pivot_split.PivotSplitStrategy;
 
 import java.util.List;

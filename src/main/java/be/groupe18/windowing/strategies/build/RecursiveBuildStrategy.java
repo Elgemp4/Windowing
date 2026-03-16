@@ -6,10 +6,8 @@ import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.median.MedianStrategy;
 import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
 import be.groupe18.windowing.strategies.pivot_split.PivotSplitStrategy;
-import be.groupe18.windowing.strategies.simple_split.SimpleSplitStrategy;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static java.util.Collections.swap;
 
@@ -28,6 +26,8 @@ public class RecursiveBuildStrategy implements BuildStrategy{
     @Override
     public PRT build(List<Segment> segments, int start, int end){
         int minSegmentIndex = getMinimumIntervalSegment(segments, start,  end);
+
+        //Get the minimum segment on variable axis and put outside the bounds of the start and end pointer
         Segment minIntSegment = segments.get(minSegmentIndex);
         swap(segments, start, minSegmentIndex);
         start++;
@@ -37,6 +37,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
             currentNode.setSegment(minIntSegment);
             return currentNode;
         }
+
         int medianIndex = getMedian(segments, start, end);
         CompositeDouble median = segments.get(medianIndex).getOrigin();
 
@@ -45,12 +46,13 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
         currentNode.setSegment(minIntSegment);
         currentNode.setMedian(median);
+
+        //Recursively build left and right subtree
         currentNode.setLeftChild(build(segments, start, pivotIndex));
         currentNode.setRightChild(build(segments,pivotIndex,end));
         return currentNode;
     }
 
-    //TODO : liste pré-triée pour éviter de devoir faire une boucle à chaque fois ?
     private int getMinimumIntervalSegment(List<Segment> segments, int start, int end) {
         return minimumStrategy.getMinimum(segments,
                 (Segment s1, Segment s2) -> CompositeDouble.greaterThan(s1.getMinInterval(), s2.getMinInterval()), start, end);

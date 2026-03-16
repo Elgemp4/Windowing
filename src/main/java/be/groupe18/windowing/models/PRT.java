@@ -9,10 +9,6 @@ public class PRT {
     private Segment segment;
     private CompositeDouble median;
 
-    public PRT() {
-        this.segment = segment;
-        this.median = median;
-    }
 
     public boolean isLeaf() {
         return leftChild == null && rightChild == null;

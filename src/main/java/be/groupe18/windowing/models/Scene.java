@@ -9,8 +9,8 @@ public class Scene {
     private PRT horizontalTree;
     private PRT verticalTree;
 
-    private BuildStrategy buildStrategy;
-    private QueryStrategy queryStrategy;
+    private final BuildStrategy buildStrategy;
+    private final QueryStrategy queryStrategy;
 
     public Scene(BuildStrategy buildStrategy, QueryStrategy queryStrategy) {
         this.buildStrategy = buildStrategy;
