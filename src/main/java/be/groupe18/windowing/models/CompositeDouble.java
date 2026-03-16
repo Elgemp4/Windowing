@@ -4,8 +4,8 @@ package be.groupe18.windowing.models;
  * Represent a composite double, which is a class that represent (a|b)
  */
 public class CompositeDouble {
-    private double primary;
-    private double secondary;
+    private final double primary;
+    private final double secondary;
 
     public CompositeDouble(double primary, double secondary) {
         this.primary = primary;
