@@ -25,6 +25,16 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
     @Override
     public PRT build(List<Segment> segments, int start, int end){
+        //If the user provided illegals arguments
+        if (segments == null || start > end) {
+            throw new IllegalArgumentException();
+        }
+
+        //If the subset is empty return null
+        if(start == end) {
+            return null;
+        }
+
         int minSegmentIndex = getMinimumIntervalSegment(segments, start,  end);
 
         //Get the minimum segment on variable axis and put outside the bounds of the start and end pointer
@@ -32,18 +42,23 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         swap(segments, start, minSegmentIndex);
         start++;
 
-        if(start >= end){
+        //If there is not elements left after finding the minimum no need to calculate the median
+        //as this will be a leaf
+        if(start == end){
             PRT currentNode = new PRT();
             currentNode.setSegment(minIntSegment);
             return currentNode;
         }
 
+        //Get the median of the origin of the segments
         int medianIndex = getMedian(segments, start, end);
         CompositeDouble median = segments.get(medianIndex).getOrigin();
 
+        //Split the subset of elements based on the median and return the index of this median (the pivot)
         int pivotIndex = pivotSplitStrategy.partition(segments, (el1, el2) -> CompositeDouble.greaterThan(el1.getOrigin(), el2.getOrigin()), start, end, medianIndex);
         PRT currentNode = new PRT();
 
+        //Store data into the node
         currentNode.setSegment(minIntSegment);
         currentNode.setMedian(median);
 
