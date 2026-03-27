@@ -2,6 +2,8 @@ package be.groupe18.windowing;
 
 import be.groupe18.windowing.infrastructure.FileSceneLoader;
 import be.groupe18.windowing.infrastructure.SceneLoader;
+import be.groupe18.windowing.models.CompositeDouble;
+import be.groupe18.windowing.models.QueryWindow;
 import be.groupe18.windowing.models.Scene;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.build.BuildStrategy;
@@ -10,6 +12,7 @@ import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
 import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
 import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
 import be.groupe18.windowing.strategies.query.QueryStrategy;
+import be.groupe18.windowing.strategies.query.SimpleQueryStrategy;
 import be.groupe18.windowing.strategies.simple_split.LinearSimpleSplitStrategy;
 import be.groupe18.windowing.strategies.simple_split.SimpleSplitStrategy;
 
@@ -26,7 +29,7 @@ public class Main {
                 new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
                 new LinearPivotSplitStrategy<>());
 
-        QueryStrategy queryStrategy = null; //TODO: implement query strategy
+        QueryStrategy queryStrategy = new SimpleQueryStrategy();
 
         List<Segment> segments = null;
         String scenePath = System.getenv("sdd_java_scene");
@@ -43,9 +46,17 @@ public class Main {
         SimpleSplitStrategy<Segment> simpleSplitStrategy = new LinearSimpleSplitStrategy<>();
         int splitIndex  = simpleSplitStrategy.split(segments, Segment::isVertical);
         Scene scene = new Scene(buildStrategy, queryStrategy);
+        
         scene.buildVerticalTree(segments, 0, splitIndex);
         scene.buildHorizontalTree(segments, splitIndex, segments.size());
         System.out.println(scene);
+
+        CompositeDouble xMin = new CompositeDouble(0, 0);
+        CompositeDouble xMax = new CompositeDouble(1000, 1000);
+        CompositeDouble yMin = new CompositeDouble(0, 0);
+        CompositeDouble yMax = new CompositeDouble(1000, 1000);
+        QueryWindow queryWindow = new QueryWindow(xMin, xMax, yMin, yMax);
         //TODO: querying
+        //queryStrategy.query(PRT tree, queryWindow);
     }
 }
