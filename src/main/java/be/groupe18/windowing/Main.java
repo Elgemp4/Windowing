@@ -29,12 +29,16 @@ public class Main {
         QueryStrategy queryStrategy = null; //TODO: implement query strategy
 
         List<Segment> segments = null;
+        String scenePath = System.getenv("sdd_java_scene");
+        if (scenePath == null || scenePath.isBlank()) {
+            System.err.println("'sdd_java_scene' variable environment isn't set.");
+            System.exit(1);
+        }
         try  {
-            segments = loader.loadScene("/home/elgem/Downloads/Windowing/scenes/100000.txt");
+            segments = loader.loadScene(scenePath); ///home/elgem/Downloads/Windowing/scenes/100000.txt
         } catch (IOException e) {
             System.exit(0);
         }
-
         System.out.println("Before");
         SimpleSplitStrategy<Segment> simpleSplitStrategy = new LinearSimpleSplitStrategy<>();
         int splitIndex  = simpleSplitStrategy.split(segments, Segment::isVertical);
