@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
 
 
         SceneLoader loader = new FileSceneLoader();
