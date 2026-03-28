@@ -20,14 +20,22 @@ public class QueryWindow {
     }
 
     private boolean isXInRange(CompositeDouble x) {
-        boolean lowerBoundOk = (xMin == null) || !CompositeDouble.greaterThan(xMin, x);
-        boolean upperBoundOk = (xMax == null) || !CompositeDouble.greaterThan(x, xMax);
+        boolean lowerBoundOk = (xMin.isNegativeInfinite()) || !CompositeDouble.greaterThan(xMin, x);
+        boolean upperBoundOk = (xMax.isPositiveInfinite()) || !CompositeDouble.greaterThan(x, xMax);
         return lowerBoundOk && upperBoundOk;
     }
 
     private boolean isYInRange(CompositeDouble y) {
-        boolean lowerBoundOk = (yMin == null) || !CompositeDouble.greaterThan(yMin, y);
-        boolean upperBoundOk = (yMax == null) || !CompositeDouble.greaterThan(y, yMax);
+        boolean lowerBoundOk = (yMin.isNegativeInfinite()) || !CompositeDouble.greaterThan(yMin, y);
+        boolean upperBoundOk = (yMax.isPositiveInfinite()) || !CompositeDouble.greaterThan(y, yMax);
         return lowerBoundOk && upperBoundOk;
     }
+
+    public CompositeDouble getXMin() { return xMin; }
+    
+    public CompositeDouble getXMax() { return xMax; }
+
+    public CompositeDouble getYMin() { return yMin; }
+
+    public CompositeDouble getYMax() { return yMax; }
 }

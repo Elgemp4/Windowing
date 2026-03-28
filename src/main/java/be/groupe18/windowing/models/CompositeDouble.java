@@ -4,12 +4,28 @@ package be.groupe18.windowing.models;
  * Represent a composite double, which is a class that represent (a|b)
  */
 public class CompositeDouble {
+    public static final CompositeDouble POSITIVE_INFINITY = new CompositeDouble(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    public static final CompositeDouble NEGATIVE_INFINITY = new CompositeDouble(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+
     private final double primary;
     private final double secondary;
 
     public CompositeDouble(double primary, double secondary) {
         this.primary = primary;
         this.secondary = secondary;
+    }
+    
+    /**
+     * @return true is the CompositeDouble instance value is set to +infinite
+     */
+    public boolean isPositiveInfinite() {
+        return (primary == Double.POSITIVE_INFINITY && secondary == Double.POSITIVE_INFINITY);
+    }
+    /**
+     * @return true is the CompositeDouble instance value is set to -infinite
+     */
+    public boolean isNegativeInfinite() {
+        return (primary == Double.NEGATIVE_INFINITY && secondary == Double.NEGATIVE_INFINITY);
     }
 
     /**
