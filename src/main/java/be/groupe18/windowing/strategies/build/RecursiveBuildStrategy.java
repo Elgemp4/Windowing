@@ -61,7 +61,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         currentNode.setMedian(median);
 
         //Recursively build left and right subtree
-        currentNode.setLeftChild(build(segments, start, medianIndex));
+        currentNode.setLeftChild(build(segments, start, medianIndex ));
         currentNode.setRightChild(build(segments,medianIndex,end));
         return currentNode;
     }
