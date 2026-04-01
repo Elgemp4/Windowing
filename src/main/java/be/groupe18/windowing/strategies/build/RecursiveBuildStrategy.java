@@ -54,8 +54,6 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         int medianIndex = getMedian(segments, start, end);
         CompositeDouble median = segments.get(medianIndex).getOrigin();
 
-        //Split the subset of elements based on the median and return the index of this median (the pivot)
-        int pivotIndex = pivotSplitStrategy.partition(segments, (el1, el2) -> CompositeDouble.greaterThan(el1.getOrigin(), el2.getOrigin()), start, end, medianIndex);
         PRT currentNode = new PRT();
 
         //Store data into the node
@@ -63,8 +61,8 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         currentNode.setMedian(median);
 
         //Recursively build left and right subtree
-        currentNode.setLeftChild(build(segments, start, pivotIndex));
-        currentNode.setRightChild(build(segments,pivotIndex,end));
+        currentNode.setLeftChild(build(segments, start, medianIndex));
+        currentNode.setRightChild(build(segments,medianIndex,end));
         return currentNode;
     }
 
