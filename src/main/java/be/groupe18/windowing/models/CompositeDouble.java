@@ -12,6 +12,10 @@ public class CompositeDouble {
         this.secondary = secondary;
     }
 
+    public double getAsDouble() {
+        return this.primary;
+    }
+
     /**
      * Uses lexicographic comparison to compare d1 and d2
      * @param d1 first composite number to compare
@@ -24,6 +28,15 @@ public class CompositeDouble {
         }
         else{
             return d1.primary == d2.primary && d1.secondary > d2.secondary;
+        }
+    }
+
+    public static boolean equalOrGreaterThan(CompositeDouble d1, CompositeDouble d2){
+        if(d1.primary >= d2.primary){
+            return true;
+        }
+        else{
+            return d1.primary == d2.primary && d1.secondary >= d2.secondary;
         }
     }
 
