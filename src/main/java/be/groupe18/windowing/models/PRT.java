@@ -9,6 +9,8 @@ public class PRT {
     private Segment segment;
     private CompositeDouble median;
 
+    private int height = 1;
+
 
     public boolean isLeaf() {
         return leftChild == null && rightChild == null;
@@ -24,10 +26,16 @@ public class PRT {
 
     public void setLeftChild(PRT leftChild) {
         this.leftChild = leftChild;
+        if(this.leftChild != null){
+            this.height = Math.max(this.height, leftChild.getHeight() + 1);
+        }
     }
 
     public void setRightChild(PRT rightChild) {
         this.rightChild = rightChild;
+        if(this.rightChild != null){
+            this.height = Math.max(this.height, rightChild.getHeight() + 1);
+        }
     }
 
     public Segment getSegment() {
@@ -44,5 +52,9 @@ public class PRT {
 
     public void setMedian(CompositeDouble median) {
         this.median = median;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

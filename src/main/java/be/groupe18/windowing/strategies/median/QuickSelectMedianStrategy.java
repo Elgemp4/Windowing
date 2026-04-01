@@ -18,34 +18,38 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
     @Override
     public int computeMedian(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {
-        return quickSelect(elements, greaterThan, start, end);
+        int medianIndex = start + (end - start) / 2;
+        return quickSelect(elements, greaterThan, start, end, medianIndex);
     }
 
-    private int quickSelect(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end){
+    private int quickSelect(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end, int medianIndex){
         if(elements == null || start >= end){
             throw new IllegalArgumentException();
         }
 
         int elementCount = end - start;
-        int medianIndex = start + elementCount/2;
 
-        // Simple linear time bubble sort on <= 5 elements for their median
-        if(elementCount <= 5){
-            return selectionSortMedian(elements, greaterThan, start, end);
+        if(elementCount <= 5) {
+            selectionSortMedian(elements, greaterThan, start, end);
+
+            return medianIndex;
         }
 
         //Compute the medians of cluster of <=5 elements and put them at the start of the list
         //The N/5 first elements are medians of group of <=5 elements
-        int clusterCount = (int)Math.ceil(elementCount / 5.0);
-        for (int clusterIndex = 0; clusterIndex < clusterCount; clusterIndex++) {
+        int nbOfClusters = (int)Math.ceil(elementCount / 5.0);
+        for (int clusterIndex = 0; clusterIndex < nbOfClusters; clusterIndex++) {
             int clusterStart = start + clusterIndex * 5;
             int currentCount = Math.min(5, end - clusterStart );
             int clusterEnd = clusterStart + currentCount;
-            swap(elements, start + clusterIndex, quickSelect(elements, greaterThan, clusterStart, clusterEnd));
+            int currentMedianIndex = clusterStart + currentCount/2;
+
+            swap(elements, start + clusterIndex, quickSelect(elements, greaterThan, clusterStart, clusterEnd, currentMedianIndex));
         }
 
+        int clusterMedianIndex = start + nbOfClusters/2;
         //Calculate the medians of median (of the cluster of 5 elements)
-        int pivotIndex = quickSelect(elements,greaterThan, start, start + clusterCount);
+        int pivotIndex = quickSelect(elements,greaterThan, start,  start+nbOfClusters, clusterMedianIndex);
 
         //Partition the elements in two group those greater than the pivot before "rank" and those greater than
         //the pivot after "rank". At "rank" the pivot is stored
@@ -53,13 +57,13 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
         //If the pivot's rank is less than the median's one search the median in the top group
         if(rank < medianIndex) {
-            return quickSelect(elements, greaterThan, rank + 1, end); //Note rank+1 because we know that the pivot isn't the median
+            return quickSelect(elements, greaterThan, rank + 1, end, medianIndex); //Note rank+1 because we know that the pivot isn't the median
         }
         //If the pivot's rank is greater than the median's one search the median in the bottom group
         else if(rank > medianIndex){
-            return quickSelect(elements, greaterThan, start, rank);
+            return quickSelect(elements, greaterThan, start, rank, medianIndex);
         }
-        return rank;
+        return medianIndex;
     }
 
     /**
