@@ -98,51 +98,8 @@ public class PRTRecursiveBuildTest {
     public void checkDataLocation(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
             PRT result = buildStrategy.build(createSegmentlListOf(currentLength, vertical, duplicates ? currentLength*100 : currentLength/10), 0, currentLength);
-            //printTree(result);
             checkChild(result, result.getLeftChild(), true);
             checkChild(result, result.getRightChild(), false);
-        }
-    }
-
-
-    /**
-     * Méthode principale pour déclencher l'affichage de l'arbre.
-     */
-    public void printTree(PRT root) {
-        System.out.println("\n=== STRUCTURE DU PRT ===");
-        printPRT(root, "", "", "(ROOT)");
-        System.out.println("========================\n");
-    }
-
-    /**
-     * Méthode récursive pour formater l'arbre.
-     */
-    private void printPRT(PRT node, String prefix, String pointer, String type) {
-        if (node == null) return;
-
-        // Affichage du pointeur et du type (L, R, ou ROOT)
-        System.out.print(prefix + pointer + type + " ");
-
-        // Récupération sécurisée des données
-        String origin = node.getSegment() != null ? String.valueOf(node.getSegment().getOrigin().getAsDouble()) : "null";
-        String minInt = node.getSegment() != null ? String.valueOf(node.getSegment().getMinInterval().getAsDouble()) : "null";
-        String med = node.getMedian() != null ? String.valueOf(node.getMedian().getAsDouble()) : "null";
-
-        // Affichage des données critiques pour le PRT
-        System.out.println("[Orig: " + origin + ", Min: " + minInt + "] | Med: " + med);
-
-        // Préparation du préfixe pour les enfants (pour maintenir la ligne verticale)
-        String childPrefix = prefix + (pointer.equals("├── ") ? "│   " : "    ");
-
-        boolean hasLeft = node.getLeftChild() != null;
-        boolean hasRight = node.getRightChild() != null;
-
-        // Appels récursifs sur les enfants
-        if (hasLeft) {
-            printPRT(node.getLeftChild(), childPrefix, hasRight ? "├── " : "└── ", "(L)");
-        }
-        if (hasRight) {
-            printPRT(node.getRightChild(), childPrefix, "└── ", "(R)");
         }
     }
 }
