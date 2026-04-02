@@ -10,9 +10,11 @@ import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
 import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +34,20 @@ public class PRTRecursiveBuildTest {
                 new LinearPivotSplitStrategy<>());
     }
 
-    private List<Segment> createSegmentlListOf(int n, boolean isVertical, int mult){
+    private List<Segment> createSegmentListOf(int n, boolean isVertical, boolean duplicates){
         ArrayList<Segment> segments = new ArrayList<>();
 
+        int origin = (int) Math.floor(Math.random() * n*100);
+        int intStart = (int) Math.floor(Math.random() * n*100);
+        int intEnd = (int) Math.floor(Math.random() * n*100);
+
         for (int i = 0; i < n; i++) {
-            int origin = (int) Math.floor(Math.random() * mult);
-            int intStart = (int) Math.floor(Math.random() * mult);
-            int intEnd = (int) Math.floor(Math.random() * mult);
+            if(!duplicates){
+                origin = (int) Math.floor(Math.random() * n*100);
+                intStart = (int) Math.floor(Math.random() * n*100);
+                intEnd = (int) Math.floor(Math.random() * n*100);
+            }
+
             if(isVertical){
                 segments.add(new Segment(new Vector2D(origin,intStart), new Vector2D(origin,intEnd)));
             }
@@ -50,17 +59,16 @@ public class PRTRecursiveBuildTest {
         return segments;
     }
 
-    @ParameterizedTest(name = "PRT Heigh check | Vertical : {0}, Probable duplicates : {1}")
+    @ParameterizedTest(name = "PRT Heigh check | Vertical : {0}, Duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
             "false, true",
             "false, false"
     })
-    @DisplayName("Check for the height of a vertical tree, with improbable duplicated")
     public void checkTreeHeight(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentlListOf(currentLength, vertical, duplicates ? currentLength*100 : currentLength/2), 0, currentLength);
+            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             assertEquals(Math.ceil(Math.log(currentLength) / Math.log(2)), result.getHeight());
         }
     }
@@ -95,11 +103,60 @@ public class PRTRecursiveBuildTest {
             "false, true",
             "false, false"
     })
-    public void checkDataLocation(boolean vertical, boolean duplicates){
+    public void checkLocalInvariant(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentlListOf(currentLength, vertical, duplicates ? currentLength*100 : currentLength/10), 0, currentLength);
+            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             checkChild(result, result.getLeftChild(), true);
             checkChild(result, result.getRightChild(), false);
         }
+    }
+
+
+    private int countNodes(PRT current) {
+        if(current == null){
+            return 0;
+        }
+
+        return 1 + countNodes(current.getLeftChild()) + countNodes(current.getRightChild());
+    }
+
+
+    @ParameterizedTest(name = "PRT Data Loss | Vertical : {0}, Duplicates : {1}")
+    @CsvSource({
+            "true, true",
+            "true, false",
+            "false, true",
+            "false, false"
+    })
+    public void checkDataLoss(boolean vertical, boolean duplicates){
+        for(int currentLength : batchSizes){
+            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+
+            assertEquals(currentLength, countNodes(result));
+        }
+    }
+
+
+    @Test
+    @DisplayName("Check empty list building")
+    public void checkEmptyList() {
+        ArrayList<Segment> segments = new ArrayList<>();
+
+        PRT result = buildStrategy.build(segments, 0, 0);
+
+        assertNull(result);
+        assertEquals(0, countNodes(result));
+    }
+
+    @Test
+    @DisplayName("Check single element list building")
+    public void checkSingleList() {
+        ArrayList<Segment> segments = new ArrayList<>();
+        segments.add(new Segment(new Vector2D(10,10), new Vector2D(10,20)));
+
+        PRT result = buildStrategy.build(segments, 0, segments.size());
+
+        assertEquals(1, countNodes(result));
+        assertEquals(1, result.getHeight());
     }
 }
