@@ -101,7 +101,9 @@ public class SimpleQueryStrategy implements QueryStrategy {
         if (CompositeDouble.greaterThan(point.getX(), window.getXMax())) {
             return;
         }
-        results.add(node.getSegment());
+        if(!CompositeDouble.greaterThan(point.getX(), window.getXMin())) {
+            results.add(node.getSegment());
+        }
         if (!node.isLeaf()) {
             reportInSubtree(node.getLeftChild(), window, results);
             reportInSubtree(node.getRightChild(), window, results);
