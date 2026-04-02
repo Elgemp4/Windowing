@@ -1,0 +1,96 @@
+package be.groupe18.windowing;
+
+import be.groupe18.windowing.models.Segment;
+import be.groupe18.windowing.models.Vector2D;
+import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class LinearMinimumTest {
+    private MinimumStrategy<Double> doubleMinimumStrategy;
+    private MinimumStrategy<Segment> segmentMinimumStrategy;
+
+
+    @BeforeEach
+    public void initStrategies() {
+        this.doubleMinimumStrategy = new LinearMinimumStrategy<>();
+        this.segmentMinimumStrategy = new LinearMinimumStrategy<>();
+    }
+
+    @Test
+    @DisplayName("Normal double minimum")
+    public void testNormalDouble() {
+        ArrayList<Double> testSuit = new ArrayList<>(List.of(10.0, 20.0, 45.0, 200.0, -10.0, -100.0, 100.0));
+        int minIndex = doubleMinimumStrategy.getMinimum(testSuit, (d1, d2) -> d1 > d2, 0, testSuit.size());
+        double min = testSuit.get(minIndex);
+        assertEquals(-100, min);
+    }
+
+
+    @Test
+    @DisplayName("All duplicates double")
+    public void testDuplicateDouble() {
+        ArrayList<Double> testSuit = new ArrayList<>(List.of(10.0,10.0,10.0,10.0,10.0,10.0,10.0));
+        int minIndex = doubleMinimumStrategy.getMinimum(testSuit, (d1, d2) -> d1 > d2, 0, testSuit.size());
+        double min = testSuit.get(minIndex);
+        assertEquals(0, minIndex);
+        assertEquals(10, min);
+    }
+
+    @Test
+    @DisplayName("Normal segment minimum")
+    public void testNormalSegment() {
+        ArrayList<Segment> testSuit = new ArrayList<>(List.of(
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,-10),new Vector2D(10,50)),
+                new Segment(new Vector2D(10,100),new Vector2D(10,-20)),
+                new Segment(new Vector2D(10,-10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,-50))
+        ));
+        int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
+        Segment min = testSuit.get(minIndex);
+        assertEquals(-50, min.getMinInterval().getAsDouble());
+    }
+
+
+    @Test
+    @DisplayName("Strict duplicate Segment")
+    public void testStrictDuplicateSegment() {
+        ArrayList<Segment> testSuit = new ArrayList<>(List.of(
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20))
+        ));
+        int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
+        Segment min = testSuit.get(minIndex);
+        assertEquals(0, minIndex);
+        assertEquals(10, min.getMinInterval().getAsDouble());
+    }
+
+    @Test
+    @DisplayName("Duplicate Interval but different origin")
+    public void testDuplicateSegment() {
+        ArrayList<Segment> testSuit = new ArrayList<>(List.of(
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(0,10),new Vector2D(0,20)),
+                new Segment(new Vector2D(100,10),new Vector2D(100,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20)),
+                new Segment(new Vector2D(-10,10),new Vector2D(-10,20)),
+                new Segment(new Vector2D(10,10),new Vector2D(10,20))
+        ));
+        int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
+        Segment min = testSuit.get(minIndex);
+        assertEquals(4, minIndex);
+        assertEquals(10, min.getMinInterval().getAsDouble());
+        assertEquals(-10, min.getOrigin().getAsDouble());
+    }
+}
