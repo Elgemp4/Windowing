@@ -67,12 +67,10 @@ public class RecursiveBuildStrategy implements BuildStrategy{
     }
 
     private int getMinimumIntervalSegment(List<Segment> segments, int start, int end) {
-        return minimumStrategy.getMinimum(segments,
-                (Segment s1, Segment s2) -> CompositeDouble.greaterThan(s1.getMinInterval(), s2.getMinInterval()), start, end);
+        return minimumStrategy.getMinimum(segments, Segment.greaterMinIntervalThan, start, end);
     }
 
     private int getMedian(List<Segment> segments, int start, int end) {
-        return  medianStrategy.computeMedian(segments,
-                (Segment s1, Segment s2) -> CompositeDouble.greaterThan(s1.getOrigin(), s2.getOrigin()), start ,end);
+        return  medianStrategy.computeMedian(segments, Segment.greaterOrigin, start ,end);
     }
 }
