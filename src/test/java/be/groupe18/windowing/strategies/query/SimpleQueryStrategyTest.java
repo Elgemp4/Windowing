@@ -52,7 +52,7 @@ class SimpleQueryStrategyTest {
                     NullPointerException.class,
                     () -> queryStrategy.query(null, window)
             );
-            assertTrue(exception.getMessage().contains("PRT arrived null"));
+            assertTrue(exception.getMessage().contains("PST arrived null"));
         }
 
         @Test
@@ -72,7 +72,7 @@ class SimpleQueryStrategyTest {
 
         @Test
         @DisplayName("Doit retourner une liste vide si l'arbre est vide")
-        void shouldReturnEmptyListWhenTreeIsEmpty(@Mock PRT emptyTree, @Mock QueryWindow window) {
+        void shouldReturnEmptyListWhenTreeIsEmpty(@Mock PST emptyTree, @Mock QueryWindow window) {
             when(emptyTree.getSegment()).thenReturn(null);
             List<Segment> results = queryStrategy.query(emptyTree, window);
             assertTrue(results.isEmpty(), "La liste de résultats doit être vide pour un arbre vide");
@@ -81,7 +81,7 @@ class SimpleQueryStrategyTest {
         @Test
         @DisplayName("Doit retourner une liste vide si la fenêtre ne contient aucun point")
         void shouldReturnEmptyListWhenWindowMissesEverything(
-                @Mock PRT rootNode, @Mock QueryWindow window, @Mock Segment segment, @Mock Vector2D point) {
+                @Mock PST rootNode, @Mock QueryWindow window, @Mock Segment segment, @Mock Vector2D point) {
 
             when(rootNode.getSegment()).thenReturn(segment);
             when(rootNode.isLeaf()).thenReturn(true);

@@ -1,7 +1,7 @@
 package be.groupe18.windowing.models;
 
 /**
- * PRT is a class for a Priority Research Three
+ * PST is a class for a Priority Search Three
  */
 public class PST {
     private PST leftChild;

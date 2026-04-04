@@ -24,14 +24,14 @@ public class Scene {
     }
 
     public void buildHorizontalTree(List<Segment> segments, int start, int end) {
-        this.horizontalTree = buildPRT(segments, start, end);
+        this.horizontalTree = buildPST(segments, start, end);
     }
 
     public void buildVerticalTree(List<Segment> segments, int start, int end) {
-        this.verticalTree = buildPRT(segments, start, end);
+        this.verticalTree = buildPST(segments, start, end);
     }
 
-    private PST buildPRT(List<Segment> segments, int start, int end) {
+    private PST buildPST(List<Segment> segments, int start, int end) {
         return buildStrategy.build(segments, start, end);
     }
 }

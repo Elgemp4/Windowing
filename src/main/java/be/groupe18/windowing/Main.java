@@ -54,6 +54,6 @@ public class Main {
 
         Pair<QueryWindow,QueryWindow> queryWindows = QueryWindow.buildQueryWindows(0, 1000, 0, 1000);
         //TODO: querying
-        //queryStrategy.query(PRT tree, queryWindow);
+        //queryStrategy.query(PST tree, queryWindow);
     }
 }

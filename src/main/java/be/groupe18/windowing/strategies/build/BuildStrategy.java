@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface BuildStrategy {
         /**
-         * Build a PRT using the list of segment provided
-         * @param segments the list of segment on which the PRT needs to be built upon
+         * Build a PST using the list of segment provided
+         * @param segments the list of segment on which the PST needs to be built upon
          * @param start the inclusive start index for the elements to use in the build process
          * @param end the exclusive end index for the elements to use in the build process can be equal to start but not greater
-         * @return The resulting PRT
+         * @return The resulting PST
          */
         PST build(List<Segment> segments, int start, int end);
 }

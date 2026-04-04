@@ -58,7 +58,7 @@ public class RecursiveBuildTest {
         return segments;
     }
 
-    @ParameterizedTest(name = "PRT Heigh check | Vertical : {0}, Duplicates : {1}")
+    @ParameterizedTest(name = "PST Heigh check | Vertical : {0}, Duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
@@ -95,7 +95,7 @@ public class RecursiveBuildTest {
         checkChild(children, children.getRightChild(), false);
     }
 
-    @ParameterizedTest(name = "PRT Data Location | Vertical : {0}, Probable duplicates : {1}")
+    @ParameterizedTest(name = "PST Data Location | Vertical : {0}, Probable duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
@@ -120,7 +120,7 @@ public class RecursiveBuildTest {
     }
 
 
-    @ParameterizedTest(name = "PRT Data Loss | Vertical : {0}, Duplicates : {1}")
+    @ParameterizedTest(name = "PST Data Loss | Vertical : {0}, Duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
