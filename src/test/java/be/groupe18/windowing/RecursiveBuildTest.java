@@ -78,14 +78,14 @@ public class RecursiveBuildTest {
         }
 
         if(isLeftChild) {
-            assertTrue(CompositeDouble.equalOrGreaterThan(parent.getMedian(), children.getSegment().getOrigin()),
-                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parent.getMedian().getAsDouble() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
+            assertTrue(parent.getMedian() >= children.getSegment().getOrigin().getAsDouble(),
+                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
             assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
                     () -> "Erreur de MinInterval (gauche) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
         }
         else{
-            assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getOrigin(), parent.getMedian()),
-                    () -> "Erreur de Médiane (droite) : La médiane du parent " + parent.getMedian().getAsDouble() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
+            assertTrue(children.getSegment().getOrigin().getAsDouble() >= parent.getMedian(),
+                    () -> "Erreur de Médiane (droite) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
             assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
                     () -> "Erreur de MinInterval (droite) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
         }

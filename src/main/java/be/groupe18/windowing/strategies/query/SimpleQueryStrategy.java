@@ -20,7 +20,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
     }
 
     private void search(PST node, QueryWindow window, List<Segment> results) {
-        if (node == null || node.getSegment() == null) {
+        if (!isValidNode(node)) {
             return;
         }
 
@@ -36,7 +36,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vLeft.isLeaf() || vLeft.getSegment() == null) break;
 
             // do if the search path goes left at ν
-            if (CompositeDouble.equalOrGreaterThan(vLeft.getMedian(), window.getOriginMin())) {
+            if (vLeft.getMedian() >= window.getOriginMin()) {
                 reportInSubtree(vLeft.getRightChild(), window, results);
                 vLeft = vLeft.getLeftChild();
             } else {
@@ -50,7 +50,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vRight.isLeaf() || vRight.getSegment() == null) break;
 
             // do if the search path goes right at ν
-            if (CompositeDouble.equalOrGreaterThan(vRight.getMedian(), window.getOriginMax())) {
+            if (vRight.getMedian() <= window.getOriginMax()) {
                 reportInSubtree(vRight.getLeftChild(), window, results);
                 vRight = vRight.getRightChild();
             } else {
@@ -59,14 +59,14 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
-    private PST findSplitNode(PST node, CompositeDouble originMin, CompositeDouble originMax) {
+    private PST findSplitNode(PST node, double originMin, double originMax) {
         while (node != null && !node.isLeaf()) {
             // Going left
-            if (CompositeDouble.equalOrGreaterThan(node.getMedian(), originMax)) {
+            if (node.getMedian() >= originMax) {
                 node = node.getLeftChild();
             }
             // Going right
-            else if (CompositeDouble.greaterThan(originMin, node.getMedian())) {
+            else if (originMin > node.getMedian()) {
                 node = node.getRightChild();
             }
             // Splitting
@@ -86,7 +86,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
     }
 
     private void reportInSubtree(PST node, QueryWindow window, List<Segment> results) {
-        if (node == null || node.getSegment() == null) {
+        if (!isValidNode(node)) {
             return;
         }
 
@@ -96,13 +96,15 @@ public class SimpleQueryStrategy implements QueryStrategy {
             return;
         }
 
-        if(window.isIntervalInRange(segment.getInterval())) {
-            results.add(node.getSegment());
-        }
+        checkAndReport(node, window, results);
 
         if (!node.isLeaf()) {
             reportInSubtree(node.getLeftChild(), window, results);
             reportInSubtree(node.getRightChild(), window, results);
         }
+    }
+
+    private boolean isValidNode(PST node) {
+        return node != null && node.getSegment() != null;
     }
 }

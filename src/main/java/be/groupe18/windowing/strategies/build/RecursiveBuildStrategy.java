@@ -52,7 +52,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
         //Get the median of the origin of the segments
         int medianIndex = getMedian(segments, start, end);
-        CompositeDouble median = segments.get(medianIndex).getOrigin();
+        double median = segments.get(medianIndex).getOrigin().getAsDouble();
 
         PST currentNode = new PST();
 

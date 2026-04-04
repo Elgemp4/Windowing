@@ -7,7 +7,7 @@ public class PST {
     private PST leftChild;
     private PST rightChild;
     private Segment segment;
-    private CompositeDouble median;
+    private double median;
 
     private int height = 1;
 
@@ -46,11 +46,11 @@ public class PST {
         this.segment = segment;
     }
 
-    public CompositeDouble getMedian() {
+    public double getMedian() {
         return median;
     }
 
-    public void setMedian(CompositeDouble median) {
+    public void setMedian(double median) {
         this.median = median;
     }
 
