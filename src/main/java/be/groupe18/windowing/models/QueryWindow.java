@@ -1,41 +1,42 @@
 package be.groupe18.windowing.models;
 
 public class QueryWindow {
-    private final CompositeDouble xMin;
-    private final CompositeDouble xMax;
+    private final CompositeDouble originMin;
+    private final CompositeDouble originMax;
 
-    private final CompositeDouble yMin;
-    private final CompositeDouble yMax;
+    private final CompositeDouble intervalMin;
+    private final CompositeDouble intervalMax;
 
-    public QueryWindow(CompositeDouble xMin, CompositeDouble xMax,
-        CompositeDouble yMin, CompositeDouble yMax) {
-            this.xMin = xMin;
-            this.xMax = xMax;
-            this.yMin = yMin;
-            this.yMax = yMax;
+    public QueryWindow(CompositeDouble originMin, CompositeDouble originMax,
+        CompositeDouble intervalMin, CompositeDouble intervalMax) {
+            this.originMin = originMin;
+            this.originMax = originMax;
+            this.intervalMin = intervalMin;
+            this.intervalMax = intervalMax;
         }
 
-    public boolean contains(Vector2D point) {
-        return isXInRange(point.getX()) && isYInRange(point.getY());
+    public boolean contains(Segment segment) {
+        return isOriginInRange(segment.getOrigin()) && isIntervalInRange(segment.getMinInterval(), segment.getMaxInterval());
     }
 
-    private boolean isXInRange(CompositeDouble x) {
-        boolean lowerBoundOk = (xMin.isNegativeInfinite()) || !CompositeDouble.greaterThan(xMin, x);
-        boolean upperBoundOk = (xMax.isPositiveInfinite()) || !CompositeDouble.greaterThan(x, xMax);
+    public boolean isOriginInRange(CompositeDouble origin) {
+        boolean lowerBoundOk = (originMin.isNegativeInfinite()) || CompositeDouble.equalOrGreaterThan(origin, originMin);
+        boolean upperBoundOk = (originMax.isPositiveInfinite()) || CompositeDouble.equalOrGreaterThan(originMax, origin);
+
         return lowerBoundOk && upperBoundOk;
     }
 
-    private boolean isYInRange(CompositeDouble y) {
-        boolean lowerBoundOk = (yMin.isNegativeInfinite()) || !CompositeDouble.greaterThan(yMin, y);
-        boolean upperBoundOk = (yMax.isPositiveInfinite()) || !CompositeDouble.greaterThan(y, yMax);
+    public boolean isIntervalInRange(CompositeDouble intervalStart, CompositeDouble intervalEnd) {
+        boolean lowerBoundOk = (intervalMin.isNegativeInfinite()) || CompositeDouble.equalOrGreaterThan(intervalEnd, intervalMin);
+        boolean upperBoundOk = (intervalMax.isPositiveInfinite()) || CompositeDouble.equalOrGreaterThan(intervalMax, intervalStart);
         return lowerBoundOk && upperBoundOk;
     }
 
-    public CompositeDouble getXMin() { return xMin; }
+    public CompositeDouble getOriginMin() { return originMin; }
     
-    public CompositeDouble getXMax() { return xMax; }
+    public CompositeDouble getOriginMax() { return originMax; }
 
-    public CompositeDouble getYMin() { return yMin; }
+    public CompositeDouble getIntervalMin() { return intervalMin; }
 
-    public CompositeDouble getYMax() { return yMax; }
+    public CompositeDouble getIntervalMax() { return intervalMax; }
 }

@@ -79,8 +79,8 @@ class SimpleQueryStrategyTest {
             
             when(window.contains(point)).thenReturn(false);
             
-            when(window.getYMin()).thenReturn(mock(CompositeDouble.class));
-            when(window.getYMax()).thenReturn(mock(CompositeDouble.class));
+            when(window.getIntervalMin()).thenReturn(mock(CompositeDouble.class));
+            when(window.getIntervalMax()).thenReturn(mock(CompositeDouble.class));
 
             List<Segment> results = strategy.query(rootNode, window);
 

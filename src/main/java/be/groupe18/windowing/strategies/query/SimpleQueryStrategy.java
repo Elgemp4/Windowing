@@ -25,8 +25,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             return;
         }
 
-        // Search with qy and qy in T. Let νsplit be the node where the two search paths split.
-        PRT splitNode = findSplitNode(node, window.getYMin(), window.getYMax());
+        PRT splitNode = findSplitNode(node, window.getIntervalMin(), window.getIntervalMax());
         if(splitNode == null) return;
 
         checkAndReport(splitNode, window, results);
@@ -38,7 +37,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vLeft.isLeaf() || vLeft.getSegment() == null) break;
 
             // do if the search path goes left at ν
-            if (!CompositeDouble.greaterThan(window.getYMin(), vLeft.getMedian())) {
+            if (!CompositeDouble.greaterThan(window.getIntervalMin(), vLeft.getMedian())) {
                 // then REPORTINSUBTREE(rc(ν),qx)
                 reportInSubtree(vLeft.getRightChild(), window, results);
                 vLeft = vLeft.getLeftChild();
@@ -53,7 +52,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vRight.isLeaf() || vRight.getSegment() == null) break;
 
             // do if the search path goes right at ν
-            if (CompositeDouble.greaterThan(window.getYMax(), vRight.getMedian())) {
+            if (CompositeDouble.greaterThan(window.getIntervalMax(), vRight.getMedian())) {
                 // then REPORTINSUBTREE(lc(ν),qx)
                 reportInSubtree(vRight.getLeftChild(), window, results);
                 vRight = vRight.getRightChild();
@@ -83,9 +82,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
 
     private void checkAndReport(PRT node, QueryWindow window, List<Segment> results) {
         if (node != null && node.getSegment() != null) {
-            Vector2D point = node.getSegment().getFirstPoint();
-            // do if p(ν) ∈(−∞:qx]×[qy :qy] then report p(ν).
-            if (window.contains(point)) {
+            if (window.contains(node.getSegment())) {
                 results.add(node.getSegment());
             }
         }
@@ -98,12 +95,13 @@ public class SimpleQueryStrategy implements QueryStrategy {
 
         Vector2D point = node.getSegment().getFirstPoint();
         // if x > xMax, pruning
-        if (CompositeDouble.greaterThan(point.getX(), window.getXMax())) {
+        if (CompositeDouble.greaterThan(point.getX(), window.getOriginMax())) {
             return;
         }
-        if(!CompositeDouble.greaterThan(point.getX(), window.getXMin())) {
+        if(!CompositeDouble.greaterThan(point.getX(), window.getOriginMin())) {
             results.add(node.getSegment());
         }
+
         if (!node.isLeaf()) {
             reportInSubtree(node.getLeftChild(), window, results);
             reportInSubtree(node.getRightChild(), window, results);
