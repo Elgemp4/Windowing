@@ -25,7 +25,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             return;
         }
 
-        PRT splitNode = findSplitNode(node, window.getIntervalMin(), window.getIntervalMax());
+        PRT splitNode = findSplitNode(node, window.getOriginMin(), window.getOriginMax());
         if(splitNode == null) return;
 
         checkAndReport(splitNode, window, results);
@@ -37,8 +37,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vLeft.isLeaf() || vLeft.getSegment() == null) break;
 
             // do if the search path goes left at ν
-            if (!CompositeDouble.greaterThan(window.getIntervalMin(), vLeft.getMedian())) {
-                // then REPORTINSUBTREE(rc(ν),qx)
+            if (CompositeDouble.equalOrGreaterThan(vLeft.getMedian(), window.getOriginMin())) {
                 reportInSubtree(vLeft.getRightChild(), window, results);
                 vLeft = vLeft.getLeftChild();
             } else {
@@ -52,8 +51,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             if (vRight.isLeaf() || vRight.getSegment() == null) break;
 
             // do if the search path goes right at ν
-            if (CompositeDouble.greaterThan(window.getIntervalMax(), vRight.getMedian())) {
-                // then REPORTINSUBTREE(lc(ν),qx)
+            if (CompositeDouble.equalOrGreaterThan(vRight.getMedian(), window.getOriginMax())) {
                 reportInSubtree(vRight.getLeftChild(), window, results);
                 vRight = vRight.getRightChild();
             } else {
@@ -62,14 +60,14 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
-    private PRT findSplitNode(PRT node, CompositeDouble yMin, CompositeDouble yMax) {
+    private PRT findSplitNode(PRT node, CompositeDouble originMin, CompositeDouble originMax) {
         while (node != null && !node.isLeaf()) {
             // Going left
-            if (!CompositeDouble.greaterThan(yMax, node.getMedian())) {
+            if (CompositeDouble.equalOrGreaterThan(node.getMedian(), originMax)) {
                 node = node.getLeftChild();
             }
             // Going right
-            else if (CompositeDouble.greaterThan(yMin, node.getMedian())) {
+            else if (CompositeDouble.greaterThan(originMin, node.getMedian())) {
                 node = node.getRightChild();
             }
             // Splitting
@@ -93,12 +91,13 @@ public class SimpleQueryStrategy implements QueryStrategy {
             return;
         }
 
-        Vector2D point = node.getSegment().getFirstPoint();
-        // if x > xMax, pruning
-        if (CompositeDouble.greaterThan(point.getX(), window.getOriginMax())) {
+        Segment segment = node.getSegment();
+
+        if (window.isIntervalTooBig(segment.getInterval())) {
             return;
         }
-        if(!CompositeDouble.greaterThan(point.getX(), window.getOriginMin())) {
+
+        if(window.isIntervalInRange(segment.getInterval())) {
             results.add(node.getSegment());
         }
 

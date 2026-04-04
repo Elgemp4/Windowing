@@ -16,21 +16,31 @@ public class QueryWindow {
         }
 
     public boolean contains(Segment segment) {
-        return isOriginInRange(segment.getOrigin()) && isIntervalInRange(segment.getMinInterval(), segment.getMaxInterval());
+        return isOriginInRange(segment.getOrigin()) && isIntervalInRange(segment.getInterval());
     }
 
-    public boolean isOriginInRange(CompositeDouble origin) {
+    private boolean isOriginInRange(CompositeDouble origin) {
         boolean lowerBoundOk = (originMin.isNegativeInfinite()) || CompositeDouble.equalOrGreaterThan(origin, originMin);
         boolean upperBoundOk = (originMax.isPositiveInfinite()) || CompositeDouble.equalOrGreaterThan(originMax, origin);
 
         return lowerBoundOk && upperBoundOk;
     }
 
-    public boolean isIntervalInRange(CompositeDouble intervalStart, CompositeDouble intervalEnd) {
-        boolean lowerBoundOk = (intervalMin.isNegativeInfinite()) || CompositeDouble.equalOrGreaterThan(intervalEnd, intervalMin);
-        boolean upperBoundOk = (intervalMax.isPositiveInfinite()) || CompositeDouble.equalOrGreaterThan(intervalMax, intervalStart);
+    public boolean isIntervalInRange(Interval interval) {
+
+        boolean lowerBoundOk = (intervalMin.isNegativeInfinite()) || CompositeDouble.equalOrGreaterThan(interval.getIntervalMax(), intervalMin);
+        boolean upperBoundOk = (intervalMax.isPositiveInfinite()) || CompositeDouble.equalOrGreaterThan(intervalMax, interval.getIntervalMin());
         return lowerBoundOk && upperBoundOk;
     }
+
+    public boolean isIntervalTooSmall(Interval interval) {
+        return CompositeDouble.greaterThan(this.intervalMin, interval.getIntervalMax());
+    }
+
+    public boolean isIntervalTooBig(Interval interval) {
+        return CompositeDouble.greaterThan(interval.getIntervalMin(), this.intervalMax);
+    }
+
 
     public CompositeDouble getOriginMin() { return originMin; }
     
