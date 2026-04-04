@@ -1,6 +1,6 @@
 package be.groupe18.windowing;
 import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PRT;
+import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.models.Vector2D;
 import be.groupe18.windowing.strategies.build.BuildStrategy;
@@ -14,14 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class PRTRecursiveBuildTest {
+public class PSTRecursiveBuildTest {
 
     private BuildStrategy buildStrategy;
     private int[] batchSizes = {10, 100,200,400,1000,10000,100000};
@@ -68,12 +67,12 @@ public class PRTRecursiveBuildTest {
     })
     public void checkTreeHeight(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             assertEquals(Math.ceil(Math.log(currentLength) / Math.log(2)), result.getHeight());
         }
     }
 
-    private void checkChild(PRT parent, PRT children, boolean isLeftChild) {
+    private void checkChild(PST parent, PST children, boolean isLeftChild) {
         if(children == null){
             return;
         }
@@ -105,14 +104,14 @@ public class PRTRecursiveBuildTest {
     })
     public void checkLocalInvariant(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             checkChild(result, result.getLeftChild(), true);
             checkChild(result, result.getRightChild(), false);
         }
     }
 
 
-    private int countNodes(PRT current) {
+    private int countNodes(PST current) {
         if(current == null){
             return 0;
         }
@@ -130,7 +129,7 @@ public class PRTRecursiveBuildTest {
     })
     public void checkDataLoss(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
 
             assertEquals(currentLength, countNodes(result));
         }
@@ -142,7 +141,7 @@ public class PRTRecursiveBuildTest {
     public void checkEmptyList() {
         ArrayList<Segment> segments = new ArrayList<>();
 
-        PRT result = buildStrategy.build(segments, 0, 0);
+        PST result = buildStrategy.build(segments, 0, 0);
 
         assertNull(result);
         assertEquals(0, countNodes(result));
@@ -154,7 +153,7 @@ public class PRTRecursiveBuildTest {
         ArrayList<Segment> segments = new ArrayList<>();
         segments.add(new Segment(new Vector2D(10,10), new Vector2D(10,20)));
 
-        PRT result = buildStrategy.build(segments, 0, segments.size());
+        PST result = buildStrategy.build(segments, 0, segments.size());
 
         assertEquals(1, countNodes(result));
         assertEquals(1, result.getHeight());

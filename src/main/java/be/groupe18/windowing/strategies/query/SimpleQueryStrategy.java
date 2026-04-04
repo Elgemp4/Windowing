@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PRT;
+import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.QueryWindow;
 import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
 
 public class SimpleQueryStrategy implements QueryStrategy {
     @Override
-    public List<Segment> query(PRT tree, QueryWindow queryWindow) {
+    public List<Segment> query(PST tree, QueryWindow queryWindow) {
         Objects.requireNonNull(tree, "PRT arrived null in " + this.getClass().getSimpleName());
         Objects.requireNonNull(queryWindow, "Query window arrived null in " + this.getClass().getSimpleName());
         List<Segment> results = new ArrayList<>();
@@ -20,18 +19,18 @@ public class SimpleQueryStrategy implements QueryStrategy {
         return results;
     }
 
-    private void search(PRT node, QueryWindow window, List<Segment> results) {
+    private void search(PST node, QueryWindow window, List<Segment> results) {
         if (node == null || node.getSegment() == null) {
             return;
         }
 
-        PRT splitNode = findSplitNode(node, window.getOriginMin(), window.getOriginMax());
+        PST splitNode = findSplitNode(node, window.getOriginMin(), window.getOriginMax());
         if(splitNode == null) return;
 
         checkAndReport(splitNode, window, results);
         if(splitNode.isLeaf()) return;
 
-        PRT vLeft = splitNode.getLeftChild();
+        PST vLeft = splitNode.getLeftChild();
         while (vLeft != null) {
             checkAndReport(vLeft, window, results);
             if (vLeft.isLeaf() || vLeft.getSegment() == null) break;
@@ -45,7 +44,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
             }
         }
 
-        PRT vRight = splitNode.getRightChild();
+        PST vRight = splitNode.getRightChild();
         while (vRight != null) {
             checkAndReport(vRight, window, results);
             if (vRight.isLeaf() || vRight.getSegment() == null) break;
@@ -60,7 +59,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
-    private PRT findSplitNode(PRT node, CompositeDouble originMin, CompositeDouble originMax) {
+    private PST findSplitNode(PST node, CompositeDouble originMin, CompositeDouble originMax) {
         while (node != null && !node.isLeaf()) {
             // Going left
             if (CompositeDouble.equalOrGreaterThan(node.getMedian(), originMax)) {
@@ -78,7 +77,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
         return node;
     }
 
-    private void checkAndReport(PRT node, QueryWindow window, List<Segment> results) {
+    private void checkAndReport(PST node, QueryWindow window, List<Segment> results) {
         if (node != null && node.getSegment() != null) {
             if (window.contains(node.getSegment())) {
                 results.add(node.getSegment());
@@ -86,7 +85,7 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
-    private void reportInSubtree(PRT node, QueryWindow window, List<Segment> results) {
+    private void reportInSubtree(PST node, QueryWindow window, List<Segment> results) {
         if (node == null || node.getSegment() == null) {
             return;
         }

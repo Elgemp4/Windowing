@@ -1,7 +1,7 @@
 package be.groupe18.windowing.strategies.build;
 
 import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PRT;
+import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.median.MedianStrategy;
 import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
@@ -24,7 +24,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
     }
 
     @Override
-    public PRT build(List<Segment> segments, int start, int end){
+    public PST build(List<Segment> segments, int start, int end){
         //If the user provided illegals arguments
         if (segments == null || start > end) {
             throw new IllegalArgumentException();
@@ -45,7 +45,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         //If there is not elements left after finding the minimum no need to calculate the median
         //as this will be a leaf
         if(start == end){
-            PRT currentNode = new PRT();
+            PST currentNode = new PST();
             currentNode.setSegment(minIntSegment);
             return currentNode;
         }
@@ -54,7 +54,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         int medianIndex = getMedian(segments, start, end);
         CompositeDouble median = segments.get(medianIndex).getOrigin();
 
-        PRT currentNode = new PRT();
+        PST currentNode = new PST();
 
         //Store data into the node
         currentNode.setSegment(minIntSegment);

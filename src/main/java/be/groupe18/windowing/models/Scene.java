@@ -6,8 +6,8 @@ import be.groupe18.windowing.strategies.query.QueryStrategy;
 import java.util.List;
 
 public class Scene {
-    private PRT horizontalTree;
-    private PRT verticalTree;
+    private PST horizontalTree;
+    private PST verticalTree;
 
     private final BuildStrategy buildStrategy;
     private final QueryStrategy queryStrategy;
@@ -31,7 +31,7 @@ public class Scene {
         this.verticalTree = buildPRT(segments, start, end);
     }
 
-    private PRT buildPRT(List<Segment> segments, int start, int end) {
+    private PST buildPRT(List<Segment> segments, int start, int end) {
         return buildStrategy.build(segments, start, end);
     }
 }
