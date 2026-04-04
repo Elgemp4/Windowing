@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class PSTRecursiveBuildTest {
+public class RecursiveBuildTest {
 
     private BuildStrategy buildStrategy;
     private int[] batchSizes = {10, 100,200,400,1000,10000,100000};
