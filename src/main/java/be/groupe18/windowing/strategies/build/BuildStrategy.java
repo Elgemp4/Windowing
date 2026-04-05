@@ -5,6 +5,9 @@ import be.groupe18.windowing.models.Segment;
 
 import java.util.List;
 
+/**
+ * An interface for building PST using the strategy design pattern
+ */
 public interface BuildStrategy {
         /**
          * Build a PST using the list of segment provided

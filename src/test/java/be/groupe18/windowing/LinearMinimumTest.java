@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LinearMinimumTest {
@@ -60,7 +59,7 @@ public class LinearMinimumTest {
         );
         int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
         Segment min = testSuit.get(minIndex);
-        assertEquals(-50, min.getMinInterval().getAsDouble());
+        assertEquals(-50, min.getInterval().getIntervalMin().getAsDouble());
     }
 
 
@@ -78,7 +77,7 @@ public class LinearMinimumTest {
         int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
         Segment min = testSuit.get(minIndex);
         assertEquals(0, minIndex);
-        assertEquals(10, min.getMinInterval().getAsDouble());
+        assertEquals(10, min.getInterval().getIntervalMin().getAsDouble());
     }
 
     @Test
@@ -95,7 +94,7 @@ public class LinearMinimumTest {
         int minIndex = segmentMinimumStrategy.getMinimum(testSuit, Segment.greaterMinIntervalThan, 0, testSuit.size());
         Segment min = testSuit.get(minIndex);
         assertEquals(4, minIndex);
-        assertEquals(10, min.getMinInterval().getAsDouble());
+        assertEquals(10, min.getInterval().getIntervalMin().getAsDouble());
         assertEquals(-10, min.getOrigin().getAsDouble());
     }
 }

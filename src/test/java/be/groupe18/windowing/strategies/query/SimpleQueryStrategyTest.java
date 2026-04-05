@@ -1,25 +1,11 @@
 package be.groupe18.windowing.strategies.query;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import be.groupe18.windowing.models.*;
 import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
-import be.groupe18.windowing.utils.Pair;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleQueryStrategyTest {

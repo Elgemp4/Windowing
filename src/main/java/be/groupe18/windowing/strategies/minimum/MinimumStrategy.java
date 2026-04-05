@@ -3,6 +3,10 @@ package be.groupe18.windowing.strategies.minimum;
 import java.util.List;
 import java.util.function.BiFunction;
 
+/**
+ * An interface for a minimum finding algorithm using the strategy design pattern
+ * @param <T> The abstract type that the minimum finding algorithm is runned on
+ */
 public interface MinimumStrategy<T> {
     /**
      * Takes in a list of elements and returns the smallest one withing the subset provided by the bounds

@@ -1,26 +1,31 @@
 package be.groupe18.windowing.strategies.build;
 
-import be.groupe18.windowing.models.CompositeDouble;
 import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.strategies.median.MedianStrategy;
 import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.PivotSplitStrategy;
 
 import java.util.List;
 
 import static java.util.Collections.swap;
 
+/**
+ * The concrete implementation of {@link BuildStrategy} using a recursive algorithm to create
+ * a PST by leveraging other minimum and median algorithms.
+ */
 public class RecursiveBuildStrategy implements BuildStrategy{
 
     private final MinimumStrategy<Segment> minimumStrategy;
     private final MedianStrategy<Segment> medianStrategy;
-    private final PivotSplitStrategy<Segment> pivotSplitStrategy;
 
-    public RecursiveBuildStrategy(MinimumStrategy<Segment> minimumStrategy, MedianStrategy<Segment> medianStrategy, PivotSplitStrategy<Segment> pivotSplitStrategy) {
+    /**
+     * The main constructor of the algorithm
+     * @param minimumStrategy The used minimum algorithm
+     * @param medianStrategy The used median algorithm
+     */
+    public RecursiveBuildStrategy(MinimumStrategy<Segment> minimumStrategy, MedianStrategy<Segment> medianStrategy) {
         this.minimumStrategy = minimumStrategy;
         this.medianStrategy = medianStrategy;
-        this.pivotSplitStrategy = pivotSplitStrategy;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
             return null;
         }
 
-        int minSegmentIndex = getMinimumIntervalSegment(segments, start,  end);
+        int minSegmentIndex = minimumStrategy.getMinimum(segments, Segment.greaterMinIntervalThan, start, end);
 
         //Get the minimum segment on variable axis and put outside the bounds of the start and end pointer
         Segment minIntSegment = segments.get(minSegmentIndex);
@@ -51,7 +56,7 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         }
 
         //Get the median of the origin of the segments
-        int medianIndex = getMedian(segments, start, end);
+        int medianIndex = medianStrategy.computeMedian(segments, Segment.greaterOrigin, start ,end);
         double median = segments.get(medianIndex).getOrigin().getAsDouble();
 
         PST currentNode = new PST();
@@ -64,13 +69,5 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         currentNode.setLeftChild(build(segments, start, medianIndex ));
         currentNode.setRightChild(build(segments,medianIndex,end));
         return currentNode;
-    }
-
-    private int getMinimumIntervalSegment(List<Segment> segments, int start, int end) {
-        return minimumStrategy.getMinimum(segments, Segment.greaterMinIntervalThan, start, end);
-    }
-
-    private int getMedian(List<Segment> segments, int start, int end) {
-        return  medianStrategy.computeMedian(segments, Segment.greaterOrigin, start ,end);
     }
 }
