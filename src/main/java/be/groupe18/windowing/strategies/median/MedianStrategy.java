@@ -4,6 +4,10 @@ package be.groupe18.windowing.strategies.median;
 import java.util.List;
 import java.util.function.BiFunction;
 
+/**
+ * An interface for a median algorithm using the strategy design pattern
+ * @param <T> The abstract type that the median algorithm is runned on
+ */
 public interface MedianStrategy<T> {
     /**
      * In place median finding on the provided list inside the subset provided by the bounds. For memory efficiency

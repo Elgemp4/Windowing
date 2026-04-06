@@ -5,10 +5,14 @@ import java.util.function.BiFunction;
 
 import static java.util.Collections.swap;
 
+/**
+ * A concrete linear time implementation of the pivot split strategy
+ * @param <T> The type of data on which to perform the pivot split
+ */
 public class LinearPivotSplitStrategy<T> implements PivotSplitStrategy<T> {
     @Override
-    public int partition(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end, int pivot) {
-        swap(elements, pivot, end-1);
+    public int pivotSplit(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end, int pivotIndex) {
+        swap(elements, pivotIndex, end-1);
         T pivotEL = elements.get(end-1);
         int j = start;
 

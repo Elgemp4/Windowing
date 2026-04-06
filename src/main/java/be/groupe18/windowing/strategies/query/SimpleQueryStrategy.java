@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import be.groupe18.windowing.models.CompositeDouble;
 import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.QueryWindow;
 import be.groupe18.windowing.models.Segment;
 
+/**
+ * A concrete simple query implementation of the query strategy
+ */
 public class SimpleQueryStrategy implements QueryStrategy {
     @Override
     public List<Segment> query(PST tree, QueryWindow queryWindow) {
@@ -19,6 +21,12 @@ public class SimpleQueryStrategy implements QueryStrategy {
         return results;
     }
 
+    /**
+     * The main algorithm ""orchestrator"" which perform the general structure of the querying algorithm
+     * @param node The root node of the {@link PST}
+     * @param window The query window on which to search the segments
+     * @param results The list of segment on which to report those within the query window
+     */
     private void search(PST node, QueryWindow window, List<Segment> results) {
         if (!isValidNode(node)) {
             return;
@@ -59,6 +67,13 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
+    /**
+     * Go down the tree until the searching path splits up
+     * @param node The current node on which to go down
+     * @param originMin The min origin of the query window
+     * @param originMax The max origin of the query window
+     * @return The node where the search path splits
+     */
     private PST findSplitNode(PST node, double originMin, double originMax) {
         while (node != null && !node.isLeaf()) {
             // Going left
@@ -77,6 +92,12 @@ public class SimpleQueryStrategy implements QueryStrategy {
         return node;
     }
 
+    /**
+     * Check if a node is within the query window and if it is reports it
+     * @param node The node to perform the check on
+     * @param window The query window that provided the bounds to check
+     * @param results The list on which to report the segment
+     */
     private void checkAndReport(PST node, QueryWindow window, List<Segment> results) {
         if (node != null && node.getSegment() != null) {
             if (window.contains(node.getSegment())) {
@@ -85,6 +106,13 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
+    /**
+     * Report all nodes which are in the correct interval, using this method is done when we are certain the origin
+     * is in the correct bounds
+     * @param node The current node on which to run report logic
+     * @param window The query window that provided the bounds for the interval
+     * @param results The list on which to report the segments
+     */
     private void reportInSubtree(PST node, QueryWindow window, List<Segment> results) {
         if (!isValidNode(node)) {
             return;
@@ -104,6 +132,11 @@ public class SimpleQueryStrategy implements QueryStrategy {
         }
     }
 
+    /**
+     * Simple helper method for defensive programming
+     * @param node The node on which to perform the checks
+     * @return True if the node is valid, false otherwise
+     */
     private boolean isValidNode(PST node) {
         return node != null && node.getSegment() != null;
     }

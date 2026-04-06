@@ -2,7 +2,6 @@ package be.groupe18.windowing;
 
 import be.groupe18.windowing.infrastructure.FileSceneLoader;
 import be.groupe18.windowing.infrastructure.SceneLoader;
-import be.groupe18.windowing.models.CompositeDouble;
 import be.groupe18.windowing.models.QueryWindow;
 import be.groupe18.windowing.models.Scene;
 import be.groupe18.windowing.models.Segment;
@@ -15,20 +14,19 @@ import be.groupe18.windowing.strategies.query.QueryStrategy;
 import be.groupe18.windowing.strategies.query.SimpleQueryStrategy;
 import be.groupe18.windowing.strategies.simple_split.LinearSimpleSplitStrategy;
 import be.groupe18.windowing.strategies.simple_split.SimpleSplitStrategy;
-import be.groupe18.windowing.utils.Pair;
+import be.groupe18.windowing.utils.Tuple;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
 
         SceneLoader loader = new FileSceneLoader();
         BuildStrategy buildStrategy = new RecursiveBuildStrategy(
                 new LinearMinimumStrategy<>(),
-                new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
-                new LinearPivotSplitStrategy<>());
+                new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()));
 
         QueryStrategy queryStrategy = new SimpleQueryStrategy();
 
@@ -52,7 +50,7 @@ public class Main {
         scene.buildHorizontalTree(segments, splitIndex, segments.size());
         System.out.println(scene);
 
-        Pair<QueryWindow,QueryWindow> queryWindows = QueryWindow.buildQueryWindows(0, 1000, 0, 1000);
+        Tuple<QueryWindow,QueryWindow> queryWindows = QueryWindow.buildQueryWindows(0, 1000, 0, 1000);
         //TODO: querying
         //queryStrategy.query(PST tree, queryWindow);
     }

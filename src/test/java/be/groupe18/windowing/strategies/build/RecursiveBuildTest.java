@@ -1,10 +1,8 @@
-package be.groupe18.windowing;
+package be.groupe18.windowing.strategies.build;
 import be.groupe18.windowing.models.CompositeDouble;
 import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.build.BuildStrategy;
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
 import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
 import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
 import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
@@ -29,8 +27,7 @@ public class RecursiveBuildTest {
     public void configureStrategies() {
         this.buildStrategy = new RecursiveBuildStrategy(
                 new LinearMinimumStrategy<>(),
-                new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
-                new LinearPivotSplitStrategy<>());
+                new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()));
     }
 
     private List<Segment> createSegmentListOf(int n, boolean isVertical, boolean duplicates){
@@ -76,18 +73,23 @@ public class RecursiveBuildTest {
         if(children == null){
             return;
         }
+        CompositeDouble parentMinInterval = children.getSegment().getInterval().getIntervalMin();
+        double parentMedian = parent.getMedian();
+
+        double childOrigin = children.getSegment().getOrigin().getAsDouble();
+        CompositeDouble childMinInterval = children.getSegment().getInterval().getIntervalMin();
 
         if(isLeftChild) {
-            assertTrue(parent.getMedian() >= children.getSegment().getOrigin().getAsDouble(),
-                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
-            assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
-                    () -> "Erreur de MinInterval (gauche) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
+            assertTrue(parentMedian >= childOrigin,
+                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parentMedian + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
+            assertTrue(CompositeDouble.equalOrGreaterThan(childMinInterval, parentMinInterval),
+                    () -> "Erreur de MinInterval (gauche) : Le MinInterval du parent " + parentMinInterval.getAsDouble() + " n'est pas plus grand que celui de l'enfant " + childMinInterval.getAsDouble());
         }
         else{
-            assertTrue(children.getSegment().getOrigin().getAsDouble() >= parent.getMedian(),
+            assertTrue(childOrigin >= parentMedian,
                     () -> "Erreur de Médiane (droite) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
-            assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
-                    () -> "Erreur de MinInterval (droite) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
+            assertTrue(CompositeDouble.equalOrGreaterThan(childMinInterval, parentMinInterval),
+                    () -> "Erreur de MinInterval (droite) : Le MinInterval du parent " + parentMinInterval.getAsDouble() + " n'est pas plus grand que celui de l'enfant " + childMinInterval.getAsDouble());
         }
 
 

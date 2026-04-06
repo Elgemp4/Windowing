@@ -7,6 +7,11 @@ import java.util.function.BiFunction;
 
 import static java.util.Collections.swap;
 
+/**
+ * Concrete implementation of the median algorithm with the quick select median with the
+ * median of medians method
+ * @param <T> The abstract type that the median algorithm is runned out
+ */
 public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
 
@@ -22,6 +27,17 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
         return quickSelect(elements, greaterThan, start, end, medianIndex);
     }
 
+    /**
+     * In place quick select implementation return the index to of the median,
+     * with afterwards all elements from start to the median index smaller than the median and all element from
+     * the median index to end-1 greater than the median
+     * @param elements the list of elements on which to perform the median selection
+     * @param greaterThan the funtion to compare two {@link T}
+     * @param start The inclusive start index of the data
+     * @param end The exclusive end index of the data
+     * @param medianIndex The index of where the median should be
+     * @return The median index
+     */
     private int quickSelect(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end, int medianIndex){
         if(elements == null || start >= end){
             throw new IllegalArgumentException();
@@ -53,7 +69,7 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
         //Partition the elements in two group those greater than the pivot before "rank" and those greater than
         //the pivot after "rank". At "rank" the pivot is stored
-        int rank = pivotSplitStrategy.partition(elements, greaterThan, start, end, pivotIndex);
+        int rank = pivotSplitStrategy.pivotSplit(elements, greaterThan, start, end, pivotIndex);
 
         //If the pivot's rank is less than the median's one search the median in the top group
         if(rank < medianIndex) {
@@ -68,10 +84,10 @@ public class QuickSelectMedianStrategy<T> implements MedianStrategy<T> {
 
     /**
      * Performs a bubble sort and then return the index of the middle element (the median)
-     * @param elements
-     * @param greaterThan
-     * @param start
-     * @param end
+     * @param elements the list of {@link T} on which to perform the bubble sort and return the median
+     * @param greaterThan a comparator between two {@link T}
+     * @param start the inclusive start index of the data in elements
+     * @param end the exclusive end index of the data in elements
      * @return the index of the median
      */
     private int selectionSortMedian(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {

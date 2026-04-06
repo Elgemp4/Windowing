@@ -1,7 +1,5 @@
-package be.groupe18.windowing;
+package be.groupe18.windowing.strategies.median;
 
-import be.groupe18.windowing.strategies.median.MedianStrategy;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
 import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
