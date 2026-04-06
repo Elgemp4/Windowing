@@ -1,13 +1,13 @@
 package be.groupe18.windowing.models;
 
 /**
- * PRT is a class for a Priority Research Three
+ * PST is a class for a Priority Search Three
  */
-public class PRT {
-    private PRT leftChild;
-    private PRT rightChild;
+public class PST {
+    private PST leftChild;
+    private PST rightChild;
     private Segment segment;
-    private CompositeDouble median;
+    private double median;
 
     private int height = 1;
 
@@ -16,22 +16,22 @@ public class PRT {
         return leftChild == null && rightChild == null;
     }
 
-    public PRT getLeftChild() {
+    public PST getLeftChild() {
         return leftChild;
     }
 
-    public PRT getRightChild() {
+    public PST getRightChild() {
         return rightChild;
     }
 
-    public void setLeftChild(PRT leftChild) {
+    public void setLeftChild(PST leftChild) {
         this.leftChild = leftChild;
         if(this.leftChild != null){
             this.height = Math.max(this.height, leftChild.getHeight() + 1);
         }
     }
 
-    public void setRightChild(PRT rightChild) {
+    public void setRightChild(PST rightChild) {
         this.rightChild = rightChild;
         if(this.rightChild != null){
             this.height = Math.max(this.height, rightChild.getHeight() + 1);
@@ -46,11 +46,11 @@ public class PRT {
         this.segment = segment;
     }
 
-    public CompositeDouble getMedian() {
+    public double getMedian() {
         return median;
     }
 
-    public void setMedian(CompositeDouble median) {
+    public void setMedian(double median) {
         this.median = median;
     }
 

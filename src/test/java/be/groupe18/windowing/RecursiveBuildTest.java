@@ -1,6 +1,6 @@
 package be.groupe18.windowing;
 import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PRT;
+import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.models.Vector2D;
 import be.groupe18.windowing.strategies.build.BuildStrategy;
@@ -58,7 +58,7 @@ public class RecursiveBuildTest {
         return segments;
     }
 
-    @ParameterizedTest(name = "PRT Heigh check | Vertical : {0}, Duplicates : {1}")
+    @ParameterizedTest(name = "PST Heigh check | Vertical : {0}, Duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
@@ -67,25 +67,25 @@ public class RecursiveBuildTest {
     })
     public void checkTreeHeight(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             assertEquals(Math.ceil(Math.log(currentLength) / Math.log(2)), result.getHeight());
         }
     }
 
-    private void checkChild(PRT parent, PRT children, boolean isLeftChild) {
+    private void checkChild(PST parent, PST children, boolean isLeftChild) {
         if(children == null){
             return;
         }
 
         if(isLeftChild) {
-            assertTrue(CompositeDouble.equalOrGreaterThan(parent.getMedian(), children.getSegment().getOrigin()),
-                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parent.getMedian().getAsDouble() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
+            assertTrue(parent.getMedian() >= children.getSegment().getOrigin().getAsDouble(),
+                    () -> "Erreur de Médiane (gauche) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
             assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
                     () -> "Erreur de MinInterval (gauche) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
         }
         else{
-            assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getOrigin(), parent.getMedian()),
-                    () -> "Erreur de Médiane (droite) : La médiane du parent " + parent.getMedian().getAsDouble() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
+            assertTrue(children.getSegment().getOrigin().getAsDouble() >= parent.getMedian(),
+                    () -> "Erreur de Médiane (droite) : La médiane du parent " + parent.getMedian() + " n'est pas plus grande que l'origine de l'enfant " + children.getSegment().getOrigin().getAsDouble());
             assertTrue(CompositeDouble.equalOrGreaterThan(children.getSegment().getMinInterval(), parent.getSegment().getMinInterval()),
                     () -> "Erreur de MinInterval (droite) : Le MinInterval du parent " + parent.getSegment().getMinInterval().getAsDouble() + " n'est pas plus grand que celui de l'enfant " + children.getSegment().getMinInterval().getAsDouble());
         }
@@ -95,7 +95,7 @@ public class RecursiveBuildTest {
         checkChild(children, children.getRightChild(), false);
     }
 
-    @ParameterizedTest(name = "PRT Data Location | Vertical : {0}, Probable duplicates : {1}")
+    @ParameterizedTest(name = "PST Data Location | Vertical : {0}, Probable duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
@@ -104,14 +104,14 @@ public class RecursiveBuildTest {
     })
     public void checkLocalInvariant(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
             checkChild(result, result.getLeftChild(), true);
             checkChild(result, result.getRightChild(), false);
         }
     }
 
 
-    private int countNodes(PRT current) {
+    private int countNodes(PST current) {
         if(current == null){
             return 0;
         }
@@ -120,7 +120,7 @@ public class RecursiveBuildTest {
     }
 
 
-    @ParameterizedTest(name = "PRT Data Loss | Vertical : {0}, Duplicates : {1}")
+    @ParameterizedTest(name = "PST Data Loss | Vertical : {0}, Duplicates : {1}")
     @CsvSource({
             "true, true",
             "true, false",
@@ -129,7 +129,7 @@ public class RecursiveBuildTest {
     })
     public void checkDataLoss(boolean vertical, boolean duplicates){
         for(int currentLength : batchSizes){
-            PRT result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
+            PST result = buildStrategy.build(createSegmentListOf(currentLength, vertical, duplicates), 0, currentLength);
 
             assertEquals(currentLength, countNodes(result));
         }
@@ -141,7 +141,7 @@ public class RecursiveBuildTest {
     public void checkEmptyList() {
         ArrayList<Segment> segments = new ArrayList<>();
 
-        PRT result = buildStrategy.build(segments, 0, 0);
+        PST result = buildStrategy.build(segments, 0, 0);
 
         assertNull(result);
         assertEquals(0, countNodes(result));
@@ -153,7 +153,7 @@ public class RecursiveBuildTest {
         ArrayList<Segment> segments = new ArrayList<>();
         segments.add(new Segment(new Vector2D(10,10), new Vector2D(10,20)));
 
-        PRT result = buildStrategy.build(segments, 0, segments.size());
+        PST result = buildStrategy.build(segments, 0, segments.size());
 
         assertEquals(1, countNodes(result));
         assertEquals(1, result.getHeight());
