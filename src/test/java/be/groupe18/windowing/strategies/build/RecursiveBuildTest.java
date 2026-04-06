@@ -1,10 +1,8 @@
-package be.groupe18.windowing;
+package be.groupe18.windowing.strategies.build;
 import be.groupe18.windowing.models.CompositeDouble;
 import be.groupe18.windowing.models.PST;
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.build.BuildStrategy;
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
 import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
 import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
 import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;

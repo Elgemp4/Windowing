@@ -1,9 +1,7 @@
-package be.groupe18.windowing;
+package be.groupe18.windowing.strategies.minimum;
 
 import be.groupe18.windowing.models.Segment;
 import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.minimum.MinimumStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -92,8 +92,8 @@ public class PST {
 
     /**
      * A getter for the current heigh of this node
-     * @apiNote This method is strictly used for unit testing purposes it's a value which is computed during
-     * the building process of the PST. It's not intended to be used for the business logic.
+     * <b>This method is strictly used for unit testing purposes it's a value which is computed during
+     * the building process of the PST. It's not intended to be used for the business logic.</b>
      * @return a int representing the heigh of this node
      */
     public int getHeight() {

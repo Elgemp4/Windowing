@@ -52,8 +52,7 @@ public class UnboundedUpVertQueryWindowTest extends AbstractWindowQueryTest {
         super(
                 new RecursiveBuildStrategy(
                         new LinearMinimumStrategy<>(),
-                        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
-                        new LinearPivotSplitStrategy<>()
+                        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>())
                 ),
                 QueryWindow.buildQueryWindows(0, 50, 0, Double.POSITIVE_INFINITY).getV1(),
                 new SimpleQueryStrategy()

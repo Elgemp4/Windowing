@@ -53,8 +53,7 @@ public class BoundedVertQueryWindowTest extends AbstractWindowQueryTest {
         super(
                 new RecursiveBuildStrategy(
                         new LinearMinimumStrategy<>(),
-                        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>()),
-                        new LinearPivotSplitStrategy<>()
+                        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>())
                 ),
                 QueryWindow.buildQueryWindows(0, 50, 0, 50).getV1(),
                 new SimpleQueryStrategy()
