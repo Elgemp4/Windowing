@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("application")
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.example"
@@ -7,6 +9,15 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = "21.0.2" // Mets "21" si tu utilises Java 21
+    modules("javafx.controls", "javafx.graphics")
+}
+
+application {
+    mainClass.set("be.groupe18.windowing.Main")
 }
 
 dependencies {

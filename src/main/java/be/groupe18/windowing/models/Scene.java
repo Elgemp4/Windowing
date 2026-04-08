@@ -49,4 +49,8 @@ public class Scene {
     private PST buildPST(List<Segment> segments, int start, int end) {
         return buildStrategy.build(segments, start, end);
     }
+
+    public PST getHorizontalPst() { return horizontalTree; }
+
+    public PST getVerticalPst() { return verticalTree; }
 }
