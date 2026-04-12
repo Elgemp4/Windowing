@@ -49,17 +49,16 @@ public class RecursiveBuildStrategy implements BuildStrategy{
 
         //If there is not elements left after finding the minimum no need to calculate the median
         //as this will be a leaf
+        PST currentNode = new PST();
+        currentNode.setSegment(minIntSegment);
+
         if(start == end){
-            PST currentNode = new PST();
-            currentNode.setSegment(minIntSegment);
             return currentNode;
         }
 
         //Get the median of the origin of the segments
         int medianIndex = medianStrategy.computeMedian(segments, Segment.greaterOrigin, start ,end);
         double median = segments.get(medianIndex).getOrigin().getAsDouble();
-
-        PST currentNode = new PST();
 
         //Store data into the node
         currentNode.setSegment(minIntSegment);
