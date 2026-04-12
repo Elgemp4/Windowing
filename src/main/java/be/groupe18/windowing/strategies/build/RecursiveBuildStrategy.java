@@ -61,7 +61,6 @@ public class RecursiveBuildStrategy implements BuildStrategy{
         double median = segments.get(medianIndex).getOrigin().getAsDouble();
 
         //Store data into the node
-        currentNode.setSegment(minIntSegment);
         currentNode.setMedian(median);
 
         //Recursively build left and right subtree
