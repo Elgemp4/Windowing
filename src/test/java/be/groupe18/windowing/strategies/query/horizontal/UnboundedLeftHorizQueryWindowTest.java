@@ -1,14 +1,14 @@
 package be.groupe18.windowing.strategies.query.horizontal;
 
-import be.groupe18.windowing.models.QueryWindow;
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.application.strategy.median.QuickSelectMedianStrategy;
+import be.groupe18.windowing.application.strategy.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.query.SimpleQueryStrategy;
+import be.groupe18.windowing.domain.model.QueryWindow;
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.model.Vector2D;
 import be.groupe18.windowing.strategies.query.AbstractWindowQueryTest;
-import be.groupe18.windowing.strategies.query.SimpleQueryStrategy;
 
 import java.util.Arrays;
 import java.util.List;

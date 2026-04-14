@@ -3,9 +3,11 @@ package be.groupe18.windowing.strategies.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.application.strategy.query.SimpleQueryStrategy;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleQueryStrategyTest {

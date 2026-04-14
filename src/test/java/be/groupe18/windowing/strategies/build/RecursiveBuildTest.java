@@ -1,11 +1,14 @@
 package be.groupe18.windowing.strategies.build;
-import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PST;
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.build.BuildStrategy;
+import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.application.strategy.median.QuickSelectMedianStrategy;
+import be.groupe18.windowing.application.strategy.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.domain.model.CompositeDouble;
+import be.groupe18.windowing.domain.model.PST;
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.model.Vector2D;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

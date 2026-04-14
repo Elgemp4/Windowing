@@ -1,8 +1,5 @@
 package be.groupe18.windowing.infrastructure;
 
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.model.Vector2D;
 
 public class FileSceneLoader implements SceneLoader{
     @Override

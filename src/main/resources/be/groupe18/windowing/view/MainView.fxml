@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="be.groupe18.windowing.presentation.viewController.MainViewController"
+            prefHeight="800.0" prefWidth="1000.0">
+
+    <top>
+        <HBox spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <children>
+                <Button fx:id="loadSceneButton" text="Charger Scène" onAction="#onLoadClicked"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <Canvas fx:id="mainCanvas"/>
+    </center>
+
+</BorderPane>

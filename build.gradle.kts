@@ -13,7 +13,7 @@ repositories {
 
 javafx {
     version = "21.0.2" // Mets "21" si tu utilises Java 21
-    modules("javafx.controls", "javafx.graphics")
+    modules("javafx.controls", "javafx.graphics", "javafx.fxml")
 }
 
 application {
@@ -26,6 +26,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+    implementation("org.openjfx:javafx-fxml:21")
 }
 
 tasks.test {

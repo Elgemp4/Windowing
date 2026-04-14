@@ -1,10 +1,13 @@
 package be.groupe18.windowing.strategies.minimum;
 
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import be.groupe18.windowing.application.strategy.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.application.strategy.minimum.MinimumStrategy;
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.model.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Arrays;

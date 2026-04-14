@@ -1,10 +1,13 @@
 package be.groupe18.windowing.strategies.simple_split;
 
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
-import be.groupe18.windowing.strategies.pivot_split.PivotSplitStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.PivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.simple_split.LinearSimpleSplitStrategy;
+import be.groupe18.windowing.application.strategy.simple_split.SimpleSplitStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

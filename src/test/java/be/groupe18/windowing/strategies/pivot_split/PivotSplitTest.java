@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.PivotSplitStrategy;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

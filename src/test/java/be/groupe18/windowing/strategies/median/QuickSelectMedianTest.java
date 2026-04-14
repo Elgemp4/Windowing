@@ -1,9 +1,12 @@
 package be.groupe18.windowing.strategies.median;
 
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import be.groupe18.windowing.application.strategy.median.MedianStrategy;
+import be.groupe18.windowing.application.strategy.median.QuickSelectMedianStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,26 +1,30 @@
 package be.groupe18.windowing;
 
+import be.groupe18.windowing.application.service.IFileDialogService;
+import be.groupe18.windowing.application.service.JavaFXFileDialogService;
+import be.groupe18.windowing.application.strategy.build.BuildStrategy;
+import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.application.strategy.median.QuickSelectMedianStrategy;
+import be.groupe18.windowing.application.strategy.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.query.QueryStrategy;
+import be.groupe18.windowing.application.strategy.query.SimpleQueryStrategy;
+import be.groupe18.windowing.application.strategy.simple_split.LinearSimpleSplitStrategy;
+import be.groupe18.windowing.application.strategy.simple_split.SimpleSplitStrategy;
+import be.groupe18.windowing.domain.model.QueryWindow;
+import be.groupe18.windowing.domain.model.Scene;
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.utils.Tuple;
 import be.groupe18.windowing.infrastructure.FileSceneLoader;
 import be.groupe18.windowing.infrastructure.SceneLoader;
-import be.groupe18.windowing.models.CompositeDouble;
-import be.groupe18.windowing.models.PST;
-import be.groupe18.windowing.models.QueryWindow;
-import be.groupe18.windowing.models.Scene;
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.build.BuildStrategy;
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
-import be.groupe18.windowing.strategies.query.QueryStrategy;
-import be.groupe18.windowing.strategies.query.SimpleQueryStrategy;
-import be.groupe18.windowing.strategies.simple_split.LinearSimpleSplitStrategy;
-import be.groupe18.windowing.strategies.simple_split.SimpleSplitStrategy;
-import be.groupe18.windowing.utils.Tuple;
-
+import be.groupe18.windowing.infrastructure.repository.ISegmentRepository;
+import be.groupe18.windowing.infrastructure.repository.SegmentsRepository;
+import be.groupe18.windowing.presentation.viewController.MainViewController;
+import be.groupe18.windowing.presentation.viewmodel.MainViewModel;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -59,18 +63,7 @@ public class Main extends Application {
             System.exit(1);
         }
         try  {
-            segments = loader.loadScene(scenePath); ///home/elgem/Downloads/Windowing/scenes/100000.txt
-            /*
-            segments = new ArrayList<>();
-            Segment a = new Segment(new Vector2D(2,2), new Vector2D(5,2));
-            Segment b = new Segment(new Vector2D(3,3), new Vector2D(3,4));
-            Segment c = new Segment(new Vector2D(5,6), new Vector2D(6,7));
-            Segment d = new Segment(new Vector2D(4,4), new Vector2D(6,4));
-            segments.add(a);
-            segments.add(b);
-            segments.add(c);
-            segments.add(d);
-            */
+            segments = loader.loadScene(scenePath);
             if(segments == null) throw new IOException("exception");
         } catch (IOException e) {
             System.exit(0);
@@ -83,22 +76,35 @@ public class Main extends Application {
         modelScene.buildHorizontalTree(segments, splitIndex, segments.size());
         System.out.println(modelScene);
 
-        Tuple<QueryWindow,QueryWindow> queryWindows = QueryWindow.buildQueryWindows(WINDOW_MIN_X, WINDOW_MAX_X, WINDOW_MIN_Y, WINDOW_MAX_Y);
-        List<Segment> queriedSegments = new ArrayList<>();
-        queriedSegments.addAll(queryStrategy.query(modelScene.getVerticalPst(), queryWindows.getV1()));
-        queriedSegments.addAll(queryStrategy.query(modelScene.getHorizontalPst(), queryWindows.getV2()));
-
-        Canvas canvas = new Canvas(SCENE_WIDTH, SCENE_HEIGHT);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        drawSegments(gc, queriedSegments, WINDOW_MIN_X, WINDOW_MAX_X, WINDOW_MIN_Y, WINDOW_MAX_Y);
-
-        Group root = new Group(canvas);
-        javafx.scene.Scene fxScene = new javafx.scene.Scene(root, SCENE_WIDTH, SCENE_HEIGHT, Color.WHITESMOKE);
-
-        primaryStage.setTitle("Windowing Project - Groupe 18");
-        primaryStage.setScene(fxScene);
-        primaryStage.show();
+        try {
+            IFileDialogService fileDialogService = new JavaFXFileDialogService(primaryStage);
+            ISegmentRepository segmentRepository = new SegmentsRepository(loader);
+            MainViewModel mainViewModel = new MainViewModel(fileDialogService, segmentRepository);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("view/MainView.fxml"));
+            fxmlLoader.setControllerFactory(type -> {
+            if (type == MainViewController.class) {
+                return new MainViewController(mainViewModel); 
+            }
+            try {
+                return type.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'instanciation du viewModel !");
+                e.printStackTrace();
+                System.exit(0);
+                throw new RuntimeException();
+            }
+            });
+            Parent root = fxmlLoader.load();
+            MainViewController viewController = fxmlLoader.getController();
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            primaryStage.setTitle("Windowing Project - Groupe 18");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement du fichier FXML !");
+            e.printStackTrace();
+            System.exit(0);
+        }
     }
 
     private void drawSegments(GraphicsContext gc, List<Segment> segments, double minX, double maxX, double minY, double maxY) {

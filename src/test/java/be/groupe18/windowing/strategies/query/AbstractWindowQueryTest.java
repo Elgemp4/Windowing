@@ -1,9 +1,11 @@
 package be.groupe18.windowing.strategies.query;
 
-import be.groupe18.windowing.models.PST;
-import be.groupe18.windowing.models.QueryWindow;
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.strategies.build.BuildStrategy;
+import be.groupe18.windowing.application.strategy.build.BuildStrategy;
+import be.groupe18.windowing.application.strategy.query.QueryStrategy;
+import be.groupe18.windowing.domain.model.PST;
+import be.groupe18.windowing.domain.model.QueryWindow;
+import be.groupe18.windowing.domain.model.Segment;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
