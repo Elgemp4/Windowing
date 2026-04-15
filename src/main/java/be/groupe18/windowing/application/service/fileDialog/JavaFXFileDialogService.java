@@ -1,4 +1,4 @@
-package be.groupe18.windowing.application.service;
+package be.groupe18.windowing.application.service.fileDialog;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ public class JavaFXFileDialogService implements IFileDialogService{
     }
 
     @Override
-    public File openFileBrowser(String title) {
+    public File execute(String title) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
 

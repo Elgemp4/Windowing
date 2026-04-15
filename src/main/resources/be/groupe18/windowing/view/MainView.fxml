@@ -3,9 +3,11 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import be.groupe18.windowing.presentation.components.NumericTextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?> <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -13,18 +15,48 @@
             prefHeight="800.0" prefWidth="1000.0">
 
     <top>
-        <HBox spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
+        <VBox style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;">
             <children>
-                <Button fx:id="loadSceneButton" text="Charger Scène" onAction="#onLoadClicked"/>
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="10" right="10" bottom="5" left="10"/>
+                    </padding>
+                    <children>
+                        <Button fx:id="loadSceneButton" text="Charger Scène" onAction="#onLoadClicked"/>
+                        <Label fx:id="errorLabel" textFill="red" style="-fx-font-weight: bold;"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="5" right="10" bottom="10" left="10"/>
+                    </padding>
+                    <children>
+                        <Label text="Query Window : " style="-fx-font-weight: bold;"/>
+                        
+                        <Label text="X min:"/>
+                        <NumericTextField fx:id="xMinField" prefWidth="60.0" text="0"/>
+                        
+                        <Label text="X max:"/>
+                        <NumericTextField fx:id="xMaxField" prefWidth="60.0" text="500"/>
+                        
+                        <Label text="Y min:"/>
+                        <NumericTextField fx:id="yMinField" prefWidth="60.0" text="0"/>
+                        
+                        <Label text="Y max:"/>
+                        <NumericTextField fx:id="yMaxField" prefWidth="60.0" text="500"/>
+
+                        <Button text="Exécuter Query" onAction="#onQueryClicked" style="-fx-base: #e1f5fe;"/>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
+        </VBox>
     </top>
 
     <center>
-        <Canvas fx:id="mainCanvas"/>
+        <Pane fx:id="canvasContainer">
+            <Canvas fx:id="mainCanvas"/>
+        </Pane>
     </center>
 
 </BorderPane>

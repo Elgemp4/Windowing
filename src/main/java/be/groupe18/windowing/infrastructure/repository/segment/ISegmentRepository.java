@@ -1,4 +1,4 @@
-package be.groupe18.windowing.infrastructure.repository;
+package be.groupe18.windowing.infrastructure.repository.segment;
 
 import java.util.List;
 
