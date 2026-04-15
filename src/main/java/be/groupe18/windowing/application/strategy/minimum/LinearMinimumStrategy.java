@@ -8,19 +8,25 @@ import java.util.function.BiFunction;
  * @param <T> The type of data on which to search the minimum
  */
 public class LinearMinimumStrategy<T> implements MinimumStrategy<T> {
-    @Override
-    public int getMinimum(List<T> elements, BiFunction<T, T, Boolean> greaterThan, int start, int end) {
-        T minElement = elements.get(start);
-        int minIndex = start;
 
-        for (int i = start ; i < end; i++) {
-            T e = elements.get(i);
-            if(greaterThan.apply(minElement, e)){
-                minElement = e;
-                minIndex = i;
-            }
-        }
+  @Override
+  public int getMinimum(
+    List<T> elements,
+    BiFunction<T, T, Boolean> greaterThan,
+    int start,
+    int end
+  ) {
+    T minElement = elements.get(start);
+    int minIndex = start;
 
-        return minIndex;
+    for (int i = start; i < end; i++) {
+      T e = elements.get(i);
+      if (greaterThan.apply(minElement, e)) {
+        minElement = e;
+        minIndex = i;
+      }
     }
+
+    return minIndex;
+  }
 }

@@ -1,7 +1,6 @@
 package be.groupe18.windowing.domain.model;
 
 import be.groupe18.windowing.application.strategy.build.BuildStrategy;
-
 import java.util.List;
 
 /**
@@ -9,28 +8,33 @@ import java.util.List;
  * for the GUI.
  */
 public class Scene {
-    private PST horizontalTree;
-    private PST verticalTree;
 
-    private final BuildStrategy buildStrategy;
+  private PST horizontalTree;
+  private PST verticalTree;
 
-    public Scene(BuildStrategy buildStrategy) {
-        this.buildStrategy = buildStrategy;
-    }
+  private final BuildStrategy buildStrategy;
 
-    public void buildHorizontalTree(List<Segment> segments, int start, int end) {
-        this.horizontalTree = buildPST(segments, start, end);
-    }
+  public Scene(BuildStrategy buildStrategy) {
+    this.buildStrategy = buildStrategy;
+  }
 
-    public void buildVerticalTree(List<Segment> segments, int start, int end) {
-        this.verticalTree = buildPST(segments, start, end);
-    }
+  public void buildHorizontalTree(List<Segment> segments, int start, int end) {
+    this.horizontalTree = buildPST(segments, start, end);
+  }
 
-    private PST buildPST(List<Segment> segments, int start, int end) {
-        return buildStrategy.build(segments, start, end);
-    }
+  public void buildVerticalTree(List<Segment> segments, int start, int end) {
+    this.verticalTree = buildPST(segments, start, end);
+  }
 
-    public PST getHorizontalPst() { return horizontalTree; }
+  private PST buildPST(List<Segment> segments, int start, int end) {
+    return buildStrategy.build(segments, start, end);
+  }
 
-    public PST getVerticalPst() { return verticalTree; }
+  public PST getHorizontalPst() {
+    return horizontalTree;
+  }
+
+  public PST getVerticalPst() {
+    return verticalTree;
+  }
 }

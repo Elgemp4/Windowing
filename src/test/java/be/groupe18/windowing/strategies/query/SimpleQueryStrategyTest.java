@@ -1,25 +1,23 @@
 package be.groupe18.windowing.strategies.query;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
 import be.groupe18.windowing.application.strategy.query.SimpleQueryStrategy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleQueryStrategyTest {
 
-    private SimpleQueryStrategy queryStrategy;
-    private RecursiveBuildStrategy buildStrategy;
+  private SimpleQueryStrategy queryStrategy;
+  private RecursiveBuildStrategy buildStrategy;
 
-    private <T> ArrayList<T> mutableList(T... elements) {
-        return new ArrayList<>(Arrays.asList(elements));
-    }
+  private <T> ArrayList<T> mutableList(T... elements) {
+    return new ArrayList<>(Arrays.asList(elements));
+  }
 
-/*
+  /*
     @BeforeEach
     void setUp() {
         queryStrategy = new SimpleQueryStrategy();
