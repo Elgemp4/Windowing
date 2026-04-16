@@ -4,6 +4,10 @@ import be.groupe18.windowing.domain.model.Segment;
 import be.groupe18.windowing.presentation.components.NumericTextField;
 import be.groupe18.windowing.presentation.viewmodel.MainViewModel;
 import java.util.List;
+
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,7 +33,7 @@ public class MainViewController {
   private Label successLabel;
   @FXML
   private Label totalCountLabel;
-
+  private final List<ChangeListener<?>> strongListeners = new java.util.ArrayList<>();
   @FXML
   private NumericTextField xMinField;
 
@@ -64,10 +68,10 @@ public class MainViewController {
     successLabel.textProperty().bind(viewModel.successMessageProperty());
     totalCountLabel.textProperty().bind(viewModel.totalCountMessageProperty());
 
-    xMinField.valueProperty().bindBidirectional(viewModel.xMinProperty());
-    xMaxField.valueProperty().bindBidirectional(viewModel.xMaxProperty());
-    yMinField.valueProperty().bindBidirectional(viewModel.yMinProperty());
-    yMaxField.valueProperty().bindBidirectional(viewModel.yMaxProperty());
+    setupStrongBinding(xMinField, viewModel.xMinProperty());
+    setupStrongBinding(xMaxField, viewModel.xMaxProperty());
+    setupStrongBinding(yMinField, viewModel.yMinProperty());
+    setupStrongBinding(yMaxField, viewModel.yMaxProperty());
 
     viewModel
       .segmentsProperty()
@@ -79,10 +83,37 @@ public class MainViewController {
 
     draw();
   }
+  private void setupStrongBinding(NumericTextField field, DoubleProperty viewModelProperty) {
+
+    ChangeListener<String> uiListener = (obs, oldVal, newVal) -> {
+      try {
+        if (newVal == null || newVal.isEmpty()) {
+          return;
+        }
+        double parsed = Double.parseDouble(newVal);
+        viewModelProperty.set(parsed);
+      } catch (NumberFormatException ignored) {
+      }
+    };
+
+    ChangeListener<Number> modelListener = (obs, oldVal, newVal) -> {
+      if (newVal != null) {
+        String newText = newVal.toString();
+        field.setText(newText);
+      }
+    };
+
+    field.textProperty().addListener(uiListener);
+    viewModelProperty.addListener(modelListener);
+
+    strongListeners.add(uiListener);
+    strongListeners.add(modelListener);
+  }
 
   @FXML
   public void onLoadClicked() {
     viewModel.onLoadClicked();
+    loadSceneButton.getParent().requestFocus();
   }
 
   @FXML
@@ -90,13 +121,17 @@ public class MainViewController {
     viewModel.onQueryClicked();
   }
 
-  private void draw() {
-    drawBackground();
 
-    List<Segment> currentSegments = viewModel.segmentsProperty().getValue();
-    if (currentSegments != null && !currentSegments.isEmpty()) {
-      drawSegments(currentSegments);
-    }
+
+  private void draw() {
+    Platform.runLater(() -> {
+      drawBackground();
+
+      List<Segment> currentSegments = viewModel.segmentsProperty().getValue();
+      if (currentSegments != null && !currentSegments.isEmpty()) {
+        drawSegments(currentSegments);
+      }
+    });
   }
 
   private void drawBackground() {

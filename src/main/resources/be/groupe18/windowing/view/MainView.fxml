@@ -74,7 +74,7 @@
                         <NumericTextField
               fx:id="xMaxField"
               prefWidth="60.0"
-              text="500"
+              text="100"
             />
                         
                         <Label text="Y min:" />
@@ -88,7 +88,7 @@
                         <NumericTextField
               fx:id="yMaxField"
               prefWidth="60.0"
-              text="500"
+              text="100"
             />
 
                         <Button
