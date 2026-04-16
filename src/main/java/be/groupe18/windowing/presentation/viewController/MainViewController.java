@@ -166,11 +166,9 @@ public class MainViewController {
         (segment.getSecondPoint().getX().getAsDouble() - renderXMin) * scaleX;
 
       double y1 =
-        height -
-        ((segment.getFirstPoint().getY().getAsDouble() - renderYMin) * scaleY);
+        (segment.getFirstPoint().getY().getAsDouble() - renderYMin) * scaleY;
       double y2 =
-        height -
-        ((segment.getSecondPoint().getY().getAsDouble() - renderYMin) * scaleY);
+        (segment.getSecondPoint().getY().getAsDouble() - renderYMin) * scaleY;
 
       gc.strokeLine(x1, y1, x2, y2);
     }

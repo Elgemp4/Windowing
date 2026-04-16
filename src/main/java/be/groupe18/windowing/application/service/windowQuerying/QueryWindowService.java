@@ -38,8 +38,14 @@ public class QueryWindowService implements IWindowQueryingService {
       scene.getVerticalPst(),
       queryWindows.getV1()
     );
+    System.out.println(
+      "Query got " + segments.size() + " segments after vertical query."
+    );
     segments.addAll(
       queryStrategy.query(scene.getHorizontalPst(), queryWindows.getV2())
+    );
+    System.out.println(
+      "Query got " + segments.size() + " segments after horizontal query."
     );
     return segments;
   }

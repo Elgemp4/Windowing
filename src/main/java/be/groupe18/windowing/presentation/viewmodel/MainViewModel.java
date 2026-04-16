@@ -8,7 +8,6 @@ import be.groupe18.windowing.domain.exception.RepositoryException;
 import be.groupe18.windowing.domain.model.Segment;
 import be.groupe18.windowing.infrastructure.repository.segment.ISegmentRepository;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ListProperty;
@@ -107,13 +106,6 @@ public class MainViewModel {
       errorMessage.set(
         "Les valeurs min doivent être inférieures aux valeurs max."
       );
-      return;
-    }
-
-    List<Segment> segments = segmentsRepository.getAllSegments();
-    if (segments == null || segments.isEmpty()) {
-      segmentsProperty().set(FXCollections.emptyObservableList());
-      errorMessage.set("Aucun segment trouvé.");
       return;
     }
     List<Segment> queriedSegments = windowQueryService.execute(
