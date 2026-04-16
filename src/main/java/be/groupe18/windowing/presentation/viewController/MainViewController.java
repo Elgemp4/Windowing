@@ -25,6 +25,10 @@ public class MainViewController {
 
   @FXML
   private Label errorLabel;
+  @FXML
+  private Label successLabel;
+  @FXML
+  private Label totalCountLabel;
 
   @FXML
   private NumericTextField xMinField;
@@ -57,6 +61,8 @@ public class MainViewController {
       .addListener((observable, oldValue, newValue) -> draw());
 
     errorLabel.textProperty().bind(viewModel.errorMessageProperty());
+    successLabel.textProperty().bind(viewModel.successMessageProperty());
+    totalCountLabel.textProperty().bind(viewModel.totalCountMessageProperty());
 
     xMinField.valueProperty().bindBidirectional(viewModel.xMinProperty());
     xMaxField.valueProperty().bindBidirectional(viewModel.xMaxProperty());

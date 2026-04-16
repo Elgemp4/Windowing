@@ -25,6 +25,8 @@ public class MainViewModel {
   private final IWindowQueryingService windowQueryService;
 
   private final StringProperty errorMessage = new SimpleStringProperty("");
+  private final StringProperty successMessage = new SimpleStringProperty("");
+  private final StringProperty totalCountMessage = new SimpleStringProperty("");
 
   private final DoubleProperty xMin = new SimpleDoubleProperty(0.0);
   private final DoubleProperty xMax = new SimpleDoubleProperty(100.0);
@@ -35,6 +37,12 @@ public class MainViewModel {
 
   public StringProperty errorMessageProperty() {
     return errorMessage;
+  }
+  public StringProperty successMessageProperty() {
+    return successMessage;
+  }
+  public StringProperty totalCountMessageProperty() {
+    return totalCountMessage;
   }
 
   public ListProperty<Segment> segmentsProperty() {
@@ -71,6 +79,7 @@ public class MainViewModel {
 
   public void onLoadClicked() {
     errorMessage.set("");
+    successMessage.set("");
     File selectedFile = fileDialogService.execute(
       "Sélectionner une scène à charger."
     );
@@ -85,10 +94,11 @@ public class MainViewModel {
       List<Segment> loadedSegments = segmentsRepository.getAllSegments();
       if (loadedSegments == null || loadedSegments.isEmpty()) {
         errorMessage.set("Le fichier chargé ne contient aucun segment.");
-        segmentsProperty().set(FXCollections.emptyObservableList());
-        return;
       }
       sceneBuildService.execute(loadedSegments);
+      segmentsProperty().set(FXCollections.emptyObservableList());
+      successMessage.set("Scène " + selectedFile.getName() + " chargée avec succès.");
+      totalCountMessage.set(loadedSegments.size() + " segments");
     } catch (RepositoryException e) {
       errorMessage.set(
         "Erreur lors de la lecture du fichier : " + e.getMessage()
@@ -97,6 +107,9 @@ public class MainViewModel {
   }
 
   public void onQueryClicked() {
+    errorMessage.set("");
+    successMessage.set("");
+
     double minXVal = xMin.get();
     double maxXVal = xMax.get();
     double minYVal = yMin.get();
@@ -112,8 +125,11 @@ public class MainViewModel {
       new WindowQueryRequest(minXVal, maxXVal, minYVal, maxYVal)
     );
     if (queriedSegments.isEmpty()) {
+      segmentsProperty().set(FXCollections.emptyObservableList());
       errorMessage.set("Aucun segment trouvé dans la zone.");
+      return;
     }
     segmentsProperty().set(FXCollections.observableArrayList(queriedSegments));
+    successMessage.set(queriedSegments.size() + " segments trouvés.");
   }
 }

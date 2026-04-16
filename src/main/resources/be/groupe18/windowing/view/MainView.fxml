@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?> <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+
 <BorderPane
   xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
@@ -26,15 +28,28 @@
                     </padding>
                     <children>
                         <Button
-              fx:id="loadSceneButton"
-              text="Charger Scène"
-              onAction="#onLoadClicked"
-            />
+                            fx:id="loadSceneButton"
+                            text="Charger Scène"
+                            onAction="#onLoadClicked"
+                        />
+                        
                         <Label
-              fx:id="errorLabel"
-              textFill="red"
-              style="-fx-font-weight: bold;"
-            />
+                            fx:id="errorLabel"
+                            textFill="red"
+                            style="-fx-font-weight: bold;"
+                        />
+                        <Label
+                            fx:id="successLabel"
+                            textFill="green"
+                            style="-fx-font-weight: bold;"
+                        />
+                        
+                        <Region HBox.hgrow="ALWAYS" />
+                        
+                        <Label
+                            fx:id="totalCountLabel"
+                            textFill="black"
+                        />
                     </children>
                 </HBox>
 
