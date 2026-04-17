@@ -45,23 +45,23 @@ public class MainViewModel {
     return totalCountMessage;
   }
 
-  public ListProperty<Segment> segmentsProperty() {
+  public ListProperty<Segment> getSegments() {
     return segments;
   }
 
-  public DoubleProperty xMinProperty() {
+  public DoubleProperty getXMin() {
     return xMin;
   }
 
-  public DoubleProperty xMaxProperty() {
+  public DoubleProperty getXMax() {
     return xMax;
   }
 
-  public DoubleProperty yMinProperty() {
+  public DoubleProperty getYMin() {
     return yMin;
   }
 
-  public DoubleProperty yMaxProperty() {
+  public DoubleProperty getYMax() {
     return yMax;
   }
 
@@ -96,7 +96,7 @@ public class MainViewModel {
         errorMessage.set("Le fichier chargé ne contient aucun segment.");
       }
       sceneBuildService.execute(loadedSegments);
-      segmentsProperty().set(FXCollections.emptyObservableList());
+      getSegments().set(FXCollections.emptyObservableList());
       successMessage.set("Scène " + selectedFile.getName() + " chargée avec succès.");
       totalCountMessage.set(loadedSegments.size() + " segments");
     } catch (RepositoryException e) {
@@ -125,11 +125,11 @@ public class MainViewModel {
       new WindowQueryRequest(minXVal, maxXVal, minYVal, maxYVal)
     );
     if (queriedSegments.isEmpty()) {
-      segmentsProperty().set(FXCollections.emptyObservableList());
+      getSegments().set(FXCollections.emptyObservableList());
       errorMessage.set("Aucun segment trouvé dans la zone.");
       return;
     }
-    segmentsProperty().set(FXCollections.observableArrayList(queriedSegments));
+    getSegments().set(FXCollections.observableArrayList(queriedSegments));
     successMessage.set(queriedSegments.size() + " segments trouvés.");
   }
 }

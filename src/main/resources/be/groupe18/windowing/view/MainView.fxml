@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.VBox?> <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.ListView?>
 
 <BorderPane
   xmlns="http://javafx.com/javafx"
@@ -107,5 +108,17 @@
             <Canvas fx:id="mainCanvas" />
         </Pane>
     </center>
+
+    <right>
+        <VBox spacing="10.0" prefWidth="450.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <children>
+                <Label text="Liste des Segments" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <ListView fx:id="segmentListView" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+    </right>
 
 </BorderPane>
