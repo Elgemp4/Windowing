@@ -90,7 +90,17 @@ public class MainViewController {
         if (newVal == null || newVal.isEmpty()) {
           return;
         }
-        double parsed = Double.parseDouble(newVal);
+        double parsed;
+
+        if(newVal.equals("-inf")) {
+          parsed = Double.NEGATIVE_INFINITY;
+        }
+        else if(newVal.equals("+inf")){
+          parsed = Double.POSITIVE_INFINITY;
+        }
+        else{
+          parsed = Double.parseDouble(newVal);
+        }
         viewModelProperty.set(parsed);
       } catch (NumberFormatException ignored) {
       }
