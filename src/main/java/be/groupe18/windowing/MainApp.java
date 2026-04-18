@@ -31,7 +31,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class MainApp extends Application {
 
   private static final String MAIN_FXML_PATH = "view/MainView.fxml";
   private static final String WINDOW_TITLE = "Windowing Project - Groupe 18";

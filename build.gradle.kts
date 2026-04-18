@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 group = "org.example"
@@ -12,12 +13,12 @@ repositories {
 }
 
 javafx {
-    version = "21.0.2" // Mets "21" si tu utilises Java 21
+    version = "21.0.2"
     modules("javafx.controls", "javafx.graphics", "javafx.fxml")
 }
 
 application {
-    mainClass.set("be.groupe18.windowing.Main")
+    mainClass.set("be.groupe18.windowing.MainTest")
 }
 
 dependencies {
