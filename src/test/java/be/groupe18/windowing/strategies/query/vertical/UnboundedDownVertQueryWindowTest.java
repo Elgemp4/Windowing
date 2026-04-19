@@ -1,69 +1,100 @@
 package be.groupe18.windowing.strategies.query.vertical;
 
-import be.groupe18.windowing.models.QueryWindow;
-import be.groupe18.windowing.models.Segment;
-import be.groupe18.windowing.models.Vector2D;
-import be.groupe18.windowing.strategies.build.RecursiveBuildStrategy;
-import be.groupe18.windowing.strategies.median.QuickSelectMedianStrategy;
-import be.groupe18.windowing.strategies.minimum.LinearMinimumStrategy;
-import be.groupe18.windowing.strategies.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.build.RecursiveBuildStrategy;
+import be.groupe18.windowing.application.strategy.median.QuickSelectMedianStrategy;
+import be.groupe18.windowing.application.strategy.minimum.LinearMinimumStrategy;
+import be.groupe18.windowing.application.strategy.pivot_split.LinearPivotSplitStrategy;
+import be.groupe18.windowing.application.strategy.query.SimpleQueryStrategy;
+import be.groupe18.windowing.domain.model.QueryWindow;
+import be.groupe18.windowing.domain.model.Segment;
+import be.groupe18.windowing.domain.model.Vector2D;
 import be.groupe18.windowing.strategies.query.AbstractWindowQueryTest;
-import be.groupe18.windowing.strategies.query.SimpleQueryStrategy;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class UnboundedDownVertQueryWindowTest extends AbstractWindowQueryTest {
 
-    private static final List<Segment> INSIDE = Arrays.asList(
-            new Segment(new Vector2D(20, 10), new Vector2D(20, 40)),
-            new Segment(new Vector2D(35, -200), new Vector2D(35, -100))
+  private static final List<Segment> INSIDE = Arrays.asList(
+    new Segment(new Vector2D(20, 10), new Vector2D(20, 40)),
+    new Segment(new Vector2D(35, -200), new Vector2D(35, -100))
+  );
+
+  private static final List<Segment> THROUGH = Arrays.asList(
+    new Segment(new Vector2D(25, -20), new Vector2D(25, 100)),
+    new Segment(new Vector2D(10, -500), new Vector2D(10, 100))
+  );
+
+  private static final List<Segment> PARTIALLY_INSIDE = Arrays.asList(
+    new Segment(new Vector2D(15, 40), new Vector2D(15, 80))
+  );
+
+  private static final List<Segment> OUTSIDE_GOOD_INT = Arrays.asList(
+    new Segment(new Vector2D(20, 60), new Vector2D(20, 90)),
+    new Segment(new Vector2D(40, 100), new Vector2D(40, 200))
+  );
+
+  private static final List<Segment> OUTSIDE_GOOD_ORIGIN = Arrays.asList(
+    new Segment(new Vector2D(-10, 20), new Vector2D(-10, 40)),
+    new Segment(new Vector2D(80, 20), new Vector2D(80, 40))
+  );
+
+  private static final List<Segment> OUTSIDE = Arrays.asList(
+    new Segment(new Vector2D(-20, 60), new Vector2D(-20, 90)),
+    new Segment(new Vector2D(80, 60), new Vector2D(80, 90))
+  );
+
+  private static final List<Segment> POINT = Arrays.asList(
+    new Segment(new Vector2D(10, 10), new Vector2D(10, 10))
+  );
+
+  public UnboundedDownVertQueryWindowTest() {
+    super(
+      new RecursiveBuildStrategy(
+        new LinearMinimumStrategy<>(),
+        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>())
+      ),
+      QueryWindow.buildQueryWindows(
+        0,
+        50,
+        Double.NEGATIVE_INFINITY,
+        50
+      ).getV1(),
+      new SimpleQueryStrategy()
     );
+  }
 
-    private static final List<Segment> THROUGH = Arrays.asList(
-            new Segment(new Vector2D(25, -20), new Vector2D(25, 100)),
-            new Segment(new Vector2D(10, -500), new Vector2D(10, 100))
-    );
+  @Override
+  protected List<Segment> getInsideSegments() {
+    return INSIDE;
+  }
 
-    private static final List<Segment> PARTIALLY_INSIDE = Arrays.asList(
-            new Segment(new Vector2D(15, 40), new Vector2D(15, 80))
-    );
+  @Override
+  protected List<Segment> getThroughSegments() {
+    return THROUGH;
+  }
 
-    private static final List<Segment> OUTSIDE_GOOD_INT = Arrays.asList(
-            new Segment(new Vector2D(20, 60), new Vector2D(20, 90)),
-            new Segment(new Vector2D(40, 100), new Vector2D(40, 200))
-    );
+  @Override
+  protected List<Segment> getPartiallyInsideSegments() {
+    return PARTIALLY_INSIDE;
+  }
 
-    private static final List<Segment> OUTSIDE_GOOD_ORIGIN = Arrays.asList(
-            new Segment(new Vector2D(-10, 20), new Vector2D(-10, 40)),
-            new Segment(new Vector2D(80, 20), new Vector2D(80, 40))
-    );
+  @Override
+  protected List<Segment> getOutsideGoodIntSegments() {
+    return OUTSIDE_GOOD_INT;
+  }
 
-    private static final List<Segment> OUTSIDE = Arrays.asList(
-            new Segment(new Vector2D(-20, 60), new Vector2D(-20, 90)),
-            new Segment(new Vector2D(80, 60), new Vector2D(80, 90))
-    );
+  @Override
+  protected List<Segment> getOutsideGoodOriginSegments() {
+    return OUTSIDE_GOOD_ORIGIN;
+  }
 
-    private static final List<Segment> POINT = Arrays.asList(
-            new Segment(new Vector2D(10, 10), new Vector2D(10, 10))
-    );
+  @Override
+  protected List<Segment> getOutsideSegments() {
+    return OUTSIDE;
+  }
 
-    public UnboundedDownVertQueryWindowTest() {
-        super(
-                new RecursiveBuildStrategy(
-                        new LinearMinimumStrategy<>(),
-                        new QuickSelectMedianStrategy<>(new LinearPivotSplitStrategy<>())
-                ),
-                QueryWindow.buildQueryWindows(0, 50, Double.NEGATIVE_INFINITY, 50).getV1(),
-                new SimpleQueryStrategy()
-        );
-    }
-
-    @Override protected List<Segment> getInsideSegments() { return INSIDE; }
-    @Override protected List<Segment> getThroughSegments() { return THROUGH; }
-    @Override protected List<Segment> getPartiallyInsideSegments() { return PARTIALLY_INSIDE; }
-    @Override protected List<Segment> getOutsideGoodIntSegments() { return OUTSIDE_GOOD_INT; }
-    @Override protected List<Segment> getOutsideGoodOriginSegments() { return OUTSIDE_GOOD_ORIGIN; }
-    @Override protected List<Segment> getOutsideSegments() { return OUTSIDE; }
-    @Override protected List<Segment> getInsidePoint() { return POINT; }
+  @Override
+  protected List<Segment> getInsidePoint() {
+    return POINT;
+  }
 }
