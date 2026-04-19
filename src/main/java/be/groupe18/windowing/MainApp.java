@@ -69,7 +69,6 @@ public class MainApp extends Application {
     );
     ISceneBuilderService sceneQueryService = new BuildSceneService(
       buildStrategy,
-      queryStrategy,
       simpleSplitStrategy,
       pstRepository
     );

@@ -1,7 +1,10 @@
 package be.groupe18.windowing.domain.exception;
 
+/**
+ * A domain-specific runtime exception used to indicate failures during repository operations.
+ */
 public class RepositoryException extends RuntimeException {
-
+ 
   public RepositoryException() {
     super();
   }
