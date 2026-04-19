@@ -6,6 +6,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
 
+/**
+ * A custom JavaFX {@link TextField} designed specifically for robust numeric input.
+ * <p>
+ * This component restricts user input to valid decimal numbers and mathematical infinity 
+ * representations (e.g., {@code inf}, {@code +inf}, {@code -inf}). It exposes a bindable 
+ * {@link DoubleProperty} representing the current numeric value, making it highly suitable 
+ * for MVVM architectures where UI inputs need to be bound directly to ViewModel properties.
+ */
 public class NumericTextField extends TextField {
 
   private final DoubleProperty value = new SimpleDoubleProperty(0.0);

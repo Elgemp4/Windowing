@@ -111,10 +111,9 @@ public class MainViewController {
       };
     });
 
-    // 2. Listen for clicks (selection changes) on the ListView
     segmentListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
       selectedSegment = newSelection;
-      draw(); // Redraw the canvas to apply/remove the highlight
+      draw();
     });
 
     draw();
